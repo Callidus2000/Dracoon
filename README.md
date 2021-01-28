@@ -187,16 +187,14 @@ Project Link: [https://github.com/Callidus2000/Dracoon](https://github.com/Calli
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Callidus2000/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Callidus2000/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Callidus2000/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/Callidus2000/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/Callidus2000/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/Callidus2000/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Callidus2000/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/Callidus2000/repo/issues
-[license-shield]: https://img.shields.io/github/license/Callidus2000/repo.svg?style=for-the-badge
-[license-url]: https://github.com/Callidus2000/repo/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/Callidus2000
+[contributors-shield]: https://img.shields.io/github/contributors/Callidus2000/Dracoon.svg?style=for-the-badge
+[contributors-url]: https://github.com/Callidus2000/Dracoon/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Callidus2000/Dracoon.svg?style=for-the-badge
+[forks-url]: https://github.com/Callidus2000/Dracoon/network/members
+[stars-shield]: https://img.shields.io/github/stars/Callidus2000/Dracoon.svg?style=for-the-badge
+[stars-url]: https://github.com/Callidus2000/Dracoon/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Callidus2000/Dracoon.svg?style=for-the-badge
+[issues-url]: https://github.com/Callidus2000/Dracoon/issues
+[license-shield]: https://img.shields.io/github/license/Callidus2000/Dracoon.svg?style=for-the-badge
+[license-url]: https://github.com/Callidus2000/Dracoon/blob/master/LICENSE
 
