@@ -21,3 +21,6 @@ TestResults/*
 # ignore the publishing Directory
 publish/*
 Dracoon/tests/PrepareTesting.ps1
+
+# inore locally created NuPKGs
+*.nupkg
