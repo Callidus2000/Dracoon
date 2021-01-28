@@ -96,25 +96,15 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* psframework - Open a powershell and install it from the gallery:
-  ```powershell
-  Install-Module psframework
-  ```
+All prerequisites will be installed automatically.
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/Callidus2000/Dracoon.git
-   ```
-2. Install the current version
-   ```powershell
-   .\Install.ps1
-   ```
-
-As soon as the module is published to the gallery it will be documented here.
-
+The releases are published in the Powershell Gallery, therefor it is quite simple:
+  ```powershell
+  Install-Module Dracoon -Force -AllowClobber
+  ```
+The `AllowClobber` option is currently neccessary because of an issue in the current PowerShellGet module. Hopefully it will not be needed in the future any more.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -126,6 +116,73 @@ The module is a wrapper for the Dracoon API. As you have to authenticate with OA
 * enable all 4 checkboxes (authorization code:implicit:password:refresh token)
 * Copy the _Client ID_ and the _Client Secret_. Both will be referenced as `$ClientID` and `$ClientSecret`.
 
+Now it's time to open the powershell. Prepare the basic variables:
+```powershell
+$cred=Get-Credential -Message "Dracoon"
+$clientId="YOU JUST CREATED IT ;-)"
+$clientSecret="THIS ALSO"
+$url="dracoon.mydomain.com"
+```
+From here you have multiple possibilities to connect to your server and store the connection for further usage:
+#### Direct auth with /auth/login (**Deprecated**)
+If you are running an older version it maybe possible to login directly. But this option is deprecated and [will be removed in every installation in the future](https://blog.dracoon.com/en/goodbye-x-sds-auth-token-hello-oauth-2.0)
+```powershell
+$connection=Connect-Dracoon -Url $url -Credential $cred
+```
+#### Via OAuth access token
+```powershell
+# Generate accesstoken
+$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -Credential $cred -TokenType access
+# Login with created access token
+$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
+```
+#### Via OAuth refresh token
+```powershell
+# Create a refresh token
+$refreshToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Credential $cred -url $url -TokenType refresh
+
+# Connect directly with the refresh token
+$connection=Connect-Dracoon -ClientID $clientId -ClientSecret $clientSecret -url $url -RefreshToken $refreshToken
+
+# Second option: Create an access token from the refreh token and login with the access token.
+$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -RefreshToken $refreshToken
+$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
+```
+
+Now we are connected to your server: What can we do? 
+```powershell
+# Query all Users and display the data in a table
+Get-DracoonUser -Connection $connection |ft
+
+# Query a specific user (you have to know the login)
+Get-DracoonUser -Connection $connection -Filter 'login:cn:DonaldDuck'
+
+#Find all locked accounts and remove the users (Luckily it supports WhatIf)
+Get-DracoonUser -Connection $connection -Filter 'isLocked:eq:true' |Remove-DracoonUser -connection $connection -WhatIf 
+```
+If you need an overview of the existing commands use 
+```powershell
+# List available commands
+Get-Command -Module Dracoon
+#Get-Help for a specific command
+Get-Help -Detailed Get-DracoonUser
+```
+everything else is documented in the module itself.
+
+### Tab completion
+Are you tired of typing the URL of your Server? Do you have multiple instances? Add the possible URLs to the Tab Completer:
+```powershell
+Add-DracoonURL "myserver.com"
+```
+Now give it a try and hit `TAB` after any `-Url` Parameter. You can now choose between all previously saved server addresses.
+
+The same mechanism kicks in for the '-Filter' parameters:
+```powershell
+Get-DracoonUser -Connection $connection -Filter [TAB]
+effectiveRoles:eq:[true or false]  firstName:cn:[search String]
+isLocked:eq:[true or false]        lastName:cn:[search String]
+login:cn:[search String]
+```
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -138,7 +195,7 @@ If you need a special function feel free to contribute to the project.
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. I'm currently preparing a CONTRIBUTE File with further insights to help with the module logic. Until then simply
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)

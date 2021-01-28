@@ -6,7 +6,7 @@
 	ModuleVersion = '1.2.0'
 
 	# ID used to uniquely identify this module
-	GUID = '6ce1852f-95bb-47b9-9af3-f7089a57a2c1'
+	GUID = 'c4a0b04e-f2c8-405a-b7f1-6202575649a6'
 
 	# Author of this module
 	Author = 'Sascha Spiekermann'
@@ -18,7 +18,7 @@
 	Copyright = 'Copyright (c) 2020 Sascha Spiekermann'
 
 	# Description of the functionality provided by this module
-	Description = 'Befehle zum ansteuern von Dracoon Dataexchange'
+	Description = 'Commands for interacting with the API of Dracoon server.'
 
 	# Minimum version of the Windows PowerShell engine required by this module
 	PowerShellVersion = '5.0'
