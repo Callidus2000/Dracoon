@@ -1,0 +1,23 @@
+﻿
+# ignore the settings folder and files for VSCode and PSS
+.vscode/*
+*.psproj
+*TempPoint*
+
+# Ignore staging info from Visual Studio
+library/Dracoon/.vs/*
+library/Dracoon/Dracoon/bin/*
+library/Dracoon/Dracoon/obj/*
+
+# ignore PowerShell Studio MetaData
+Dracoon/Dracoon.psproj
+Dracoon/Dracoon.psproj.bak
+Dracoon/Dracoon.psprojs
+Dracoon/Dracoon.psproj
+
+# ignore the TestResults
+TestResults/*
+
+# ignore the publishing Directory
+publish/*
+Dracoon/tests/PrepareTesting.ps1
