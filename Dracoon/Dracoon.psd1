@@ -3,7 +3,7 @@
 	RootModule = 'Dracoon.psm1'
 
 	# Version number of this module.
-	ModuleVersion = '1.2.0'
+	ModuleVersion = '1.2.1'
 
 	# ID used to uniquely identify this module
 	GUID = 'c4a0b04e-f2c8-405a-b7f1-6202575649a6'
@@ -91,10 +91,10 @@
 
 
 			# A URL to the license for this module.
-			# LicenseUri = ''
+			LicenseUri = 'https://github.com/Callidus2000/Dracoon/blob/master/LICENSE'
 
 			# A URL to the main website for this project.
-			# ProjectUri = ''
+			ProjectUri = 'https://github.com/Callidus2000/Dracoon/'
 
 			# A URL to an icon representing this module.
 			# IconUri = ''
