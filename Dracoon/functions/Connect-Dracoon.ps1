@@ -7,37 +7,61 @@
 	Creates a new Connection Object to a Dracoon Server instance.
 
 	.PARAMETER Credential
-	Credential-Object zur direkten Anmeldung an Dracoon.
+	Credential-Object for direct login.
 
 	.PARAMETER Url
-	Die Base-URL des Servers
+	The server root URL.
 
 	.PARAMETER RefreshToken
-	Bei Anmeldung per OAuth: Refresh-Token. Kann per Request-OAuthRefreshToken erzeugt werden.
+	Neccessary for OAuth Login: Refresh-Token. Can be created with Request-OAuthRefreshToken.
 
 	.PARAMETER AccessToken
-	Bei Anmeldung per OAuth: Access-Token. Kann per Request-OAuthRefreshToken erzeugt werden.
+	Neccessary for OAuth Login: Access-Token. Can be created with Request-OAuthRefreshToken.
 
 	.PARAMETER ClientID
-	Bei Anmeldung per OAuth: Die ID des OAauth Clients
+	Neccessary for OAuth Login: The Id of the OAauth Client.
 
 	.PARAMETER ClientSecret
-	Bei Anmeldung per OAuth: Das Secret des OAuth Clients
+	Neccessary for OAuth Login: The Secret of the OAauth Client.
 
 	.PARAMETER EnableException
-	Sollen Exceptions geworfen werden?
+	Should Exceptions been thrown?
 
 	.EXAMPLE
-	connect-dracoon -Url https://dataexchange.mydomain.com -Credential $cred
-	Stellt eine Verbindung zu https://dataexchange.mydomain.com mit den angegebenen Credentials her
+	# Connect Via OAuth access token
+	## Generate accesstoken
+	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -Credential $cred -TokenType access
+	## Login with created access token
+	$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
+	.EXAMPLE
+	# Connect Via OAuth refresh token
+	## Create a refresh token
+	$refreshToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Credential $cred -url $url -TokenType refresh
 
-	$authToken=Request-OAuthRefreshToken -Url https://dataexchange.mydomain.com -Credential (Get-StoredCredential -Target "dataexchange.mydomain.com") -ClientID "0O6WWKp********i2B6yxk8" -ClientSecret "aySR8X***********ei"
-	$connection = Connect-Dracoon -Url https://dataexchange.mydomain.com -RefreshToken $authToken -ClientID "0O6WWKp********i2B6yxk8" -ClientSecret "aySR8X***********ei"
-	Meldet sich per OAuth an
+	## Connect directly with the refresh token
+	$connection=Connect-Dracoon -ClientID $clientId -ClientSecret $clientSecret -url $url -RefreshToken $refreshToken
 
-
+	.EXAMPLE
+	## Second option: Create an access token from the refreh token and login with the access token.
+	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -RefreshToken $refreshToken
+	$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
+	.EXAMPLE
+	# Direct auth with /auth/login (**Deprecated**)
+	## If you are running an older version it maybe possible to login directly. But this option is deprecated and [will be removed in every installation in the future](https://blog.dracoon.com/en/goodbye-x-sds-auth-token-hello-oauth-2.0)
+	$connection=Connect-Dracoon -Url $url -Credential $cred
 	.NOTES
-	General notes
+	As you have to authenticate with OAuth2.0 it is neccessary to create a client application within the admin web-page. For this
+	* Go to _System Settings_ / _Apps_ in the navigation bar
+	* Click on the _Add app_ button
+	* Enter an application name (e.g. "Powershell Scripting")
+	* enable all checkboxes (authorization code:implicit:password)
+	* Copy the _Client ID_ and the _Client Secret_. Both will be referenced as `$ClientID` and `$ClientSecret`.
+
+	Now it's time to open the powershell. Prepare the basic variables:
+	$cred=Get-Credential -Message "Dracoon"
+	$clientId="YOU JUST CREATED IT ;-)"
+	$clientSecret="THIS ALSO"
+	$url="dracoon.mydomain.com"
 	#>
 
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
