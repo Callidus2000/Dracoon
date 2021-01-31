@@ -15,6 +15,9 @@
     .PARAMETER RefreshToken
     As an alternative a refresh token can be used instead of a credential Object
 
+    .PARAMETER AuthToken
+    Authorization Token/Code from Three Legged OAuth Workflow
+
     .PARAMETER ClientID
     OAuth client ID
 
@@ -78,16 +81,6 @@
             }
             Default { Write-PSFMessage -Level Critical "Unknown ParameterSetName $($PSCmdlet.ParameterSetName)"}
         }
-        # if ($Credential) {
-        #     # Set Username and Password for first login, escape special characters since we use them in URI parameters
-        #     Write-PSFMessage "OAuth-Anmeldung für User $($Credential.UserName) beim Server $serverRoot"
-        #     $parameter = @{ "grant_type" = $PSCmdlet.ParameterSetName; "username" = $Credential.UserName; "password" = $Credential.GetNetworkCredential().password }
-        # }
-        # elseif ($RefreshToken) {
-        #     Write-PSFMessage "Create AccessToken from RefreshToken"
-        #     write-psfmessage -Level Debug -Message "Login per refreshToken $RefreshToken, Client-ID/Secret: $($ClientId), $($ClientSecret)"
-        #     $parameter = @{ "grant_type" = $PSCmdlet.ParameterSetName; "refresh_token" = "$RefreshToken" }
-        # }
         try {
             $tokenResponse = Invoke-WebRequest -URI "$serverRoot/oauth/token" -Method Post -ContentType "application/x-www-form-urlencoded" -Body $parameter -Headers @{Authorization = ("Basic {0}" -f $Base64AuthInfo) }
             Write-PSFMessage "tokenResponse=$tokenResponse"
@@ -101,12 +94,10 @@
         }
         catch {
             $streamReader = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
-            $global:ErrResp = $streamReader.ReadToEnd() | ConvertFrom-Json
+            $errResp = $streamReader.ReadToEnd() | ConvertFrom-Json
             $streamReader.Close()
-            Write-PSFMessage "$_"
-            Write-PSFMessage "Body=$($parameter)"
-            Write-PSFMessage "tokenResponse=$($tokenResponse)"
-            Write-PSFMessage "ErrResp=$ErrResp"
+            Write-PSFMessage "Exception: $_"
+            Write-PSFMessage "Error-Response=$ErrResp"
         }
     }
 }
