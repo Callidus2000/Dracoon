@@ -12,10 +12,8 @@
     .PARAMETER Filter
     All filter fields are connected via logical conjunction (AND)
     Filter string syntax: FIELD_NAME:OPERATOR:VALUE
-    Example:
-
-    name:cn:searchString
-    Filter by group name containing searchString.
+    Possible combinations:
+    'name:cn:[search String]'
 
     .PARAMETER Limit
     Range limit. Maximum 500.

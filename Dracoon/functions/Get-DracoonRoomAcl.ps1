@@ -24,6 +24,13 @@ function Get-DracoonRoomAcl {
     permissionsManage:eq:true|user:cn:searchString
     Get all users that have manage permissions to this room AND whose (firstname OR lastname OR email) is like searchString.
 
+    Possible combinations:
+    'user:cn:[search String]',
+    'userId:eq:[positive Integer]'
+    'isGranted:eq:[true/false/any]'
+    'permissionsManage:eq:[true/false]'
+    'effectivePerm:eq:[true/false]'
+
     .PARAMETER Limit
     Range limit. Maximum 500.
     For more results please use paging (offset + limit).

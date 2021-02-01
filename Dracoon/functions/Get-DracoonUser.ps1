@@ -25,6 +25,14 @@
         DIRECT means: e.g. user gets role directly granted from someone with grant permission right.
         EFFECTIVE means: e.g. user gets role through group membership.
 
+    Possible combinations:
+    'login:cn:[search String]'
+    'firstName:cn:[search String]'
+    'lastName:cn:[search String]'
+    'isLocked:eq:[true/false]'
+    'effectiveRoles:eq:[true/false]'
+
+
     .PARAMETER IncludeAttributes
     Parameter description
 

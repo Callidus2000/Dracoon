@@ -18,6 +18,19 @@
     type:eq:file|createdAt:ge:2015-01-01
     Get nodes where type equals file AND file creation date is >= 2015-01-01.
 
+    Possible combinations:
+    'type:[eq]:[room/folder/file]'
+    'fileType:[cn/eq]:[search String]'
+    'classification:[eq]:[1 - public/2 - internal/3 - confidential/4 - strictly confidential]'
+    'createdBy:[cn/eq]:[search String]'
+    'createdAt:[ge/le]:[Date (yyyy-MM-dd)]'
+    'updatedBy:[cn/eq]:[search String]'
+    'updatedAt:[ge/le]:[Date (yyyy-MM-dd)]'
+    'expireAt:[ge/le]:[Date (yyyy-MM-dd)]'
+    'size:[ge/le]:[size in bytes]'
+    'isFavorite:[eq]:[true or false]'
+    'branchVersion:[ge/le]:[version number]'
+    'parentPath:[cn/eq]:[search String]'
     .PARAMETER Limit
     Range limit. Maximum 500.
     For more results please use paging (offset + limit).

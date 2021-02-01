@@ -15,8 +15,15 @@
     .PARAMETER Filter
     All filter fields are connected via logical conjunction (AND)
     Filter string syntax: FIELD_NAME:OPERATOR:VALUE[:VALUE...]
-    Example:
-    type:eq:room:folder|perm:eq:read
+
+    Possible combinations:
+    'type:eq:[room/folder/file]'
+    'perm:eq:[manage/read/change/create/delete/manageDownloadShare/manageUploadShare/canReadRecycleBin/canRestoreRecycleBin/canDeleteRecycleBin]'
+    'childPerm:eq:[cf perm]'
+    'name:[cn/eq]:[Node name]'
+    'encrypted:eq:[true/false]'
+    'branchVersion:[ge/le]:[Branch version]'
+
 
     .PARAMETER Limit
     Range limit. Maximum 500.

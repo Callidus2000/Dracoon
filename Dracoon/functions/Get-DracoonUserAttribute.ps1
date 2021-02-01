@@ -23,6 +23,12 @@
     key:cn:searchString_1|value:cn:searchString_2
     Filter by attribute key contains searchString_1 AND attribute value contains searchString_2.
 
+    Possible combinations:
+    'key:[cn/eq/sw]:[Attribute key]'
+    'value:[cn/eq/sw]:[Attribute value]'
+
+
+
     .PARAMETER Limit
     Range limit. Maximum 500.
     For more results please use paging (offset + limit).

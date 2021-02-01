@@ -17,6 +17,19 @@
     Filter string syntax: FIELD_NAME:OPERATOR:VALUE[:VALUE...]
     userName:cn:searchString_1|userFirstName:cn:searchString_2|nodeId:eq:2
 
+    Possible combinations:
+    'nodeId:eq:[positive Integer]'
+    'nodeName:[cn/eq]:[search String]'
+    'nodeParentId:eq:[positive Integer]'
+    'Parent ID 0 is the root node.:[]:[]'
+    'userId:eq:[positive Integer]'
+    'userName:[cn/eq]:[search String]'
+    'userFirstName:[cn/eq]:[search String]'
+    'userLastName:[cn/eq]:[search String]'
+    'permissionsManage:eq:[true or false]'
+    'nodeIsEncrypted:eq:[true or false]'
+    'nodeHasActivitiesLog:eq:[true or false]'
+
     .PARAMETER Limit
     Range limit. Maximum 500.
     For more results please use paging (offset + limit).
