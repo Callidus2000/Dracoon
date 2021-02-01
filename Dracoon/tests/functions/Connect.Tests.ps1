@@ -42,6 +42,19 @@ Describe  "Connection tests" {
             $accessToken = Request-DracoonOAuthToken -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -Credential $credentials -TokenType "access"
             $accessToken | Should -Match "\w{32}"
         }
+        Context "Direct login with Connect-Dracoon without explicit usage of Request-DracoonOAuthToken"{
+            It "Connect with grant_type=password"{
+                $connection=Connect-Dracoon -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -Credential $credentials
+                $connection | Should -Not -BeNullOrEmpty
+                Test-DracoonConnection -Connection $connection | Should -BeTrue
+            }
+            It "Connect with grant_type=refresh_token"{
+                $refreshToken = Request-DracoonOAuthToken -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -Credential $credentials -TokenType "refresh"
+                $connection=Connect-Dracoon -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -RefreshToken $refreshToken
+                $connection | Should -Not -BeNullOrEmpty
+                Test-DracoonConnection -Connection $connection | Should -BeTrue
+            }
+        }
         Context "Create an Refresh Token and a Access Token based on it" {
             beforeall {
                 $refreshToken = Request-DracoonOAuthToken -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -Credential $credentials -TokenType "refresh"
