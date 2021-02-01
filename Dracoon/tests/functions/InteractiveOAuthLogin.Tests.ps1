@@ -17,5 +17,14 @@ Describe "Interactive OAuth Login (Three Legged)" {
             Request-DracoonOAuthToken -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -AuthToken $authToken | Should -BeNullOrEmpty
             Test-DracoonConnection -connection $connection |Should -BeTrue
         }
+        It "Direct Authorization Code login with Connect-Dracoon without explicit usage of Request-DracoonOAuthToken" {
+            Request-DracoonOAuthToken -url $fqdn -ClientID $ClientID
+            $tempCred = Get-Credential -Message "Please perform browser login" -UserName "Enter AuthorizationCode as PW"
+            $tempCred | Should -Not -BeNullOrEmpty
+            $authToken = $tempCred.GetNetworkCredential().Password
+            $connection = Connect-Dracoon -url $fqdn -ClientID $ClientID -clientSecret $clientSecret -AuthToken $authToken
+            $connection | Should -Not -BeNullOrEmpty
+            Test-DracoonConnection -connection $connection |Should -BeTrue
+        }
     }
 }
