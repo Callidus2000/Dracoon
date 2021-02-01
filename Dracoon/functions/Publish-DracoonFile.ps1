@@ -24,6 +24,9 @@
     .PARAMETER Notes
     Notes for the file
 
+    .PARAMETER ResolutionStrategy
+    If the file already exists: Should it be overwritten (overwrite) ord should it be uploaded with an automatic name (autorename)
+
     .PARAMETER EnableException
     If set to $true errors throw an exception
 
@@ -55,10 +58,12 @@
         [datetime]$ExpirationDate,
         [int]$Classification = 2,
         [string]$Notes = "",
+        [ValidateSet("overwrite", "autorename")]
+        [string]$ResolutionStrategy = "autorename",
         [bool]$EnableException = $false
     )
     $fullFilePath = Get-Item $FilePath -ErrorAction SilentlyContinue
-    Write-PSFMessage "Upload of $FilePath ($fullFilePath)"
+    Write-PSFMessage "Upload of $FilePath ($fullFilePath), ResolutionStrategy=$ResolutionStrategy"
     if ($fullFilePath) {
         $apiCallParameter = @{
             Connection = $Connection
@@ -88,7 +93,7 @@
                 $apiCallParameter = @{
                     Connection  = $Connection
                     method      = "Post"
-                    Path        = $initUpload.uploadUrl -replace "^.*/api"
+                    Path        = "/v4/uploads/$($initUpload.token)"
                     ContentType = "application/octet-stream"
                     InFile      = $fullFilePath.FullName
                 }
@@ -101,6 +106,9 @@
                         Connection = $Connection
                         method     = "Put"
                         Path       = "/v4/uploads/$($initUpload.token)"
+                        Body=@{
+                            resolutionStrategy = $ResolutionStrategy
+                        }
                     }
                     $result = Invoke-DracoonAPI @apiCallParameter
                     # $result = $this.Invoke(("/v4/uploads/{0}" -f $initUpload.token), $null, [Microsoft.Powershell.Commands.WebRequestMethod]::Put, $false)
