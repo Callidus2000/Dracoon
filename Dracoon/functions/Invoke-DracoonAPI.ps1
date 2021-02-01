@@ -46,6 +46,8 @@
         [parameter(Mandatory)]
         [Microsoft.Powershell.Commands.WebRequestMethod]$Method,
         [bool] $HideParameters = $false,
+        [string]$ContentType = "application/json;charset=UTF-8",
+        [string]$InFile,
         [switch]$EnablePaging
     )
     $uri = $connection.webServiceRoot + $path
@@ -59,13 +61,16 @@
         method      = $Method
         body        = ($Body | Remove-NullFromHashtable -Json)
         Headers     = $connection.headers
-        ContentType = "application/json;charset=UTF-8"
+        ContentType = $ContentType
+    }
+    If ($Body) {
+        $restAPIParameter.body = ($Body | Remove-NullFromHashtable -Json)
+    }
+    If ($InFile) {
+        $restAPIParameter.InFile = $InFile
     }
     Write-PSFMessage -Message "Rufe $uri auf" -Target $connection
 
-    if ($method -ne [Microsoft.Powershell.Commands.WebRequestMethod]::Get) {
-        $restAPIParameter.body = ($Body | Remove-NullFromHashtable -Json)
-    }
     $tempBody = $body
     if ($hideParameters) {
         if ($tempBody.ContainsKey("password")) { $tempBody.set_Item("password", "*****") }

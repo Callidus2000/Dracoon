@@ -63,6 +63,7 @@
 		'Test-DracoonConnection'
 		'Add-DracoonUrl'
 		'Set-DracoonUrl'
+		'Publish-DracoonDocument'
 	)
 
 	# Cmdlets to export from this module
