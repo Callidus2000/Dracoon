@@ -21,6 +21,12 @@
     .PARAMETER Method
     HTTP Method
 
+    .PARAMETER ContentType
+    HTTP-ContentType, defaults to "application/json;charset=UTF-8"
+
+    .PARAMETER InFile
+    File which should be transfered during the Request.
+
     .PARAMETER HideParameters
     If set to $true the password is hidden from logging
 
@@ -69,7 +75,7 @@
     If ($InFile) {
         $restAPIParameter.InFile = $InFile
     }
-    Write-PSFMessage -Message "Rufe $uri auf" -Target $connection
+    Write-PSFMessage -Message "$(("$Method").ToUpper()) $uri" -Target $connection
 
     $tempBody = $body
     if ($hideParameters) {
