@@ -18,6 +18,9 @@
 	.PARAMETER AccessToken
 	Neccessary for OAuth Login: Access-Token. Can be created with Request-OAuthRefreshToken.
 
+	.PARAMETER AuthToken
+	Neccessary for OAuth Login: Auth-Token. Can be created with Request-OAuthRefreshToken.
+
 	.PARAMETER ClientID
 	Neccessary for OAuth Login: The Id of the OAauth Client.
 
@@ -68,40 +71,49 @@
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 	[CmdletBinding(DefaultParameterSetName = "AccessToken")]
 	Param (
-		[parameter(mandatory = $true, ParameterSetName = "Credential")]
-		[pscredential]$Credential,
+        [parameter(mandatory = $true, ParameterSetName = "ThreeLeggedOAuth")]
+        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+        [parameter(mandatory = $true, ParameterSetName = "password")]
+        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
+        [parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
-		[parameter(mandatory = $true, ParameterSetName = "RefreshToken")]
-		[parameter(mandatory = $true, ParameterSetName = "Credential")]
-		[PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.url")]
-		[string]$Url,
-		[parameter(mandatory = $true, ParameterSetName = "RefreshToken")]
+        [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.url")]
+        [string]$Url,
+        [parameter(mandatory = $true, ParameterSetName = "ThreeLeggedOAuth")]
+        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+        [parameter(mandatory = $true, ParameterSetName = "password")]
+        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
+        [string]$ClientID,
+        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+        [parameter(mandatory = $true, ParameterSetName = "password")]
+        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
+        [string]$ClientSecret,
+        [parameter(mandatory = $true, ParameterSetName = "password")]
+        [parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
+        [pscredential]$Credential,
+        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+        [string]$AuthToken,
+        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
 		[string]$RefreshToken,
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
 		[string]$AccessToken,
-		[parameter(mandatory = $true, ParameterSetName = "RefreshToken")]
-		[string]$ClientID,
-		[parameter(mandatory = $true, ParameterSetName = "RefreshToken")]
-		[string]$ClientSecret,
 		[switch]$EnableException
 	)
 
 	begin {
 		Write-PSFMessage "Stelle Verbindung her zu $Url" -Target $Url
-		if ($Credential) {
+		if ($PSCmdlet.ParameterSetName -eq 'deprecatedLogin') {
 			# $connection = [Dracoon]::new($Credential, $Url)
 			Invoke-PSFProtectedCommand -ActionString "Connect-Dracoon.Connecting" -ActionStringValues $Url -Target $Url -ScriptBlock {
 				# $connection = [Dracoon]::new($Credential.username, $Credential.GetNetworkCredential().password, $Url)
 				$connection = [Dracoon]::new($Credential, $Url)
 			} -PSCmdlet $PSCmdlet  -EnableException $EnableException
 		}
-		elseif ($RefreshToken) {
-			# Invoke-PSFProtectedCommand -ActionString "Connect-Dracoon.Connecting" -ActionStringValues $Url -Target $Url -ScriptBlock {
-			# } -PSCmdlet $PSCmdlet  -EnableException $EnableException
-			$AccessToken=Request-DracoonOAuthToken -Url $Url -ClientID $ClientID -ClientSecret $ClientSecret -RefreshToken $RefreshToken
-			$connection = [Dracoon]::new($AccessToken,$Url)
-		}else{
-			# Connection with an access token
+		else{
+			if ($PSCmdlet.ParameterSetName -ne 'AccessToken') {
+				Write-PSFMessage "Aquiring AccessToken with splatting, ParameterSetName=$($PSCmdlet.ParameterSetName)"
+				$AccessToken=Request-DracoonOAuthToken @PSBoundParameters
+			}
 			$connection = [Dracoon]::new($AccessToken,$Url)
 		}
 	}
