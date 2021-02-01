@@ -1,24 +1,4 @@
-﻿#     [PSCustomObject]CreateADUser([string]$userPrincipalName, [string]$firstName, [string]$lastName, [string]$title, [string]$gender, [string]$domain, [string]$samAccountName) {
-#         $randomPassword = [Dracoon]::GenerateRandomPassword()
-#         $adConfigs = $this.getAuthConfigAD()
-#         $adId = $adConfigs | Where-Object { $_.alias -ieq $domain } | Select-Object -ExpandProperty id
-#         if (-not ($adId)) {
-#             throw "Unbekannter AD-Alias $domain"
-#         }
-#         $parameter = @{firstName = $firstName; lastName = $lastName; authMethods = @(@{authId = "active_directory"; isEnabled = "true"; options = @(@{key = "ad_config_id"; value = $adId }; @{key = "username"; value = $samAccountName }) }); login = $userPrincipalName; title = $title; gender = $gender; expiration = @{enableExpiration = "false"; expireAt = "2018-01-01T00:00:00" }; receiverLanguage = "de-DE"; email = $userPrincipalName; notifyUser = "false"; needsToChangePassword = "false"; password = $randomPassword }
-#         $result = $this.InvokePost("/v4/users", $parameter)
-#         return $result
-#     }
-#     [PSCustomObject]CreateMailUser([string]$login, [string]$firstName, [string]$lastName, [string]$title, [string]$gender, [string]$eMail, [bool]$enableOpenID) {
-#         $parameter = @{firstName = $firstName; lastName = $lastName; authMethods = @(@{authId = "sql"; isEnabled = "true" }); login = $login; title = $title; gender = $gender; expiration = @{enableExpiration = "false"; expireAt = "2018-01-01T00:00:00" }; receiverLanguage = "de-DE"; email = $eMail; notifyUser = "true"; needsToChangePassword = "true" }
-#         if ($enableOpenID) {
-#             $parameter["authMethods"] += (@{authId = "openid"; isEnabled = $true; options = @(@{key = "openid_config_id"; value = $this.openIDConfigId }; @{key = "username"; value = $eMail }) })
-#         }
-#         $result = $this.InvokePost("/v4/users", $parameter)
-#         return $result
-#     }
-
-function New-DracoonUser {
+﻿function New-DracoonUser {
     <#
     .SYNOPSIS
     Create a new user.
