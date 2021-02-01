@@ -71,7 +71,6 @@
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 	[CmdletBinding(DefaultParameterSetName = "AccessToken")]
 	Param (
-        [parameter(mandatory = $true, ParameterSetName = "ThreeLeggedOAuth")]
         [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
         [parameter(mandatory = $true, ParameterSetName = "password")]
         [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
@@ -79,7 +78,6 @@
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.url")]
         [string]$Url,
-        [parameter(mandatory = $true, ParameterSetName = "ThreeLeggedOAuth")]
         [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
         [parameter(mandatory = $true, ParameterSetName = "password")]
         [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
