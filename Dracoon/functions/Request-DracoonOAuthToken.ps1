@@ -1,10 +1,19 @@
 ﻿function Request-DracoonOAuthToken {
     <#
     .SYNOPSIS
-    Helper-Function for creation of an OAuth Token.
+    Helper-Function for creation of OAuth Tokens.
 
     .DESCRIPTION
     The function uses OAuth for creating an refresh token which can be used for login to a dracoon instance.
+    For connecting to Dracoon via OAuth you always need the -Url as the function needs to know where the Server is located.
+    Furthermore you need an AccessToken which can be requested with this function.
+    Besides the ClientId/ClientSecret you need to provide one of the following:
+    -Credential
+    -RefreshToken
+    -AuthToken
+
+    The RefreshToken and AuthToken can be generated with this function, too.
+    For more information about OAuth see about_Dracoon.
 
     .PARAMETER Url
     Base-URL of the Dracoon Server
@@ -25,11 +34,28 @@
     OAuth client secret
 
     .PARAMETER TokenType
-    Defines the type of token to be returned.
+    Defines the type of token to be returned, default "access"
 
     .EXAMPLE
-    $authToken=Request-OAuthRefreshToken -Url $serverURL -Credential $credential -ClientID "0O6WWKpp0n***********xk8" -clientSecret "aySR8XB*********99Jj7DFgei"
-    $connection = Connect-Dracoon -Url $serverURL -RefreshToken $authToken  -ClientID "0O6WWKpp0n***********xk8" -clientSecret "aySR8XB*********99Jj7DFgei"
+	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -Credential $cred -TokenType access
+    #Creates an AccessToken which can be used for simple connection-
+	$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
+
+    .EXAMPLE
+	$refreshToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Credential $cred -url $url -TokenType refresh
+	# Creates a refresh token which can be exchanged for an accessToken.
+	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -RefreshToken $refreshToken
+
+	.EXAMPLE
+    Request-DracoonOAuthToken -url $url -ClientID $ClientID
+    Opens the default browser for aquiring an authorization code.
+
+    .EXAMPLE
+    #Read authorization code and generate an access code from it.
+    $tempCred = Get-Credential -Message "Please perform browser login" -UserName "Enter AuthorizationCode as PW"
+    $authToken = $tempCred.GetNetworkCredential().Password
+    $accessToken = Request-DracoonOAuthToken -url $url -ClientID $ClientID -clientSecret $clientSecret -AuthToken $authToken
+
 
     .NOTES
     General notes
