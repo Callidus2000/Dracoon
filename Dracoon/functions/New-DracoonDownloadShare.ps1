@@ -61,22 +61,53 @@
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '')]
-
+    [CmdletBinding(DefaultParameterSetName = "Default")]
     param (
-        [parameter(Mandatory)]
+        [parameter(Mandatory = $true, ParameterSetName = "Default")]
+        [parameter(Mandatory = $true, ParameterSetName = "Password")]
+        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
         [Dracoon]$Connection,
-        [parameter(Mandatory)]
+        [parameter(Mandatory = $true, ParameterSetName = "Default")]
+        [parameter(Mandatory = $true, ParameterSetName = "Password")]
+        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
         [int]$NodeId,
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [string]$Notes = "",
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [string]$InternalNotes = "",
-        [string]$ShareName="Download-Share",
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
+        [string]$ShareName = "Download-Share",
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [bool]$ShowCreatorName = $true,
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [bool]$ShowCreatorUsername = $false,
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [bool]$NotifyCreator = $true,
+        [parameter(Mandatory = $true, ParameterSetName = "Password")]
+        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
         [string[]]$TextMessageRecipients,
         [int]$MaxDownloads=0,
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $true, ParameterSetName = "Password")]
         [string]$Password,
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
         [switch]$RandomPassword,
+        [parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [parameter(Mandatory = $false, ParameterSetName = "Password")]
+        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [datetime]$ExpirationDate
     )
     Write-PSFMessage "Creating Download Share for Node $NodeId"
