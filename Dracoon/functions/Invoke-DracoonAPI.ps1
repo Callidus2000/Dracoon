@@ -34,6 +34,9 @@
     Wenn die API mit Paging arbeitet, kann über diesn Parameter ein automatisches Handling aktivieren.
     Dann werden alle Pages abgehandelt und nur die items zurückgeliefert.
 
+    .PARAMETER EnableException
+    If set to true, inner exceptions will be rethrown. Otherwise the an empty result will be returned.
+
     .EXAMPLE
     $result = Invoke-DracoonAPI -connection $this -path "/v4/auth/login" -method POST -body @{login = $credentials.UserName; password = $credentials.GetNetworkCredential().Password; language = "1"; authType = "sql" } -hideparameters $true
     Login to the service
@@ -54,6 +57,7 @@
         [bool] $HideParameters = $false,
         [string]$ContentType = "application/json;charset=UTF-8",
         [string]$InFile,
+        [bool]$EnableException=$true,
         [switch]$EnablePaging
     )
     $uri = $connection.webServiceRoot + $path
@@ -123,7 +127,11 @@
     catch {
         $result = $_.errordetails
         Write-PSFMessage "$result" -Level Critical
-        throw $_#$result.Message
+        If ($EnableException){
+            throw $_#$result.Message
+        }else{
+            return
+        }
     }
     #---------------------------------------------------------------------------------
     # Ist das Objekt zu groß wird es als String und nicht als PSCustomObject
