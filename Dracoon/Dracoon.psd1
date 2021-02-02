@@ -54,6 +54,7 @@
 		'Get-DracoonUserAttribute'
 		'Invoke-DracoonAPI'
 		'New-DracoonDataroom'
+		'New-DracoonDownloadShare'
 		'New-DracoonUser'
 		'Publish-DracoonFile'
 		'Remove-DracoonNode'
