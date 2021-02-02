@@ -25,7 +25,7 @@
 
         # Specifies an array of strings containing charactergroups from which the password will be generated.
         # At least one char from each group (string) will be used.
-        [String[]]$InputStrings = @('abcdefghijkmnpqrstuvwxyz', 'ABCEFGHJKLMNPQRSTUVWXYZ', '23456789', '!"#%&')
+        [String[]]$InputStrings = @('abcdefghijkmnpqrstuvwxyz', 'ABCEFGHJKLMNPQRSTUVWXYZ', '23456789', '!"#%')
 
         $Password = @{ }
         # Create char arrays containing groups of possible chars
