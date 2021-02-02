@@ -61,6 +61,7 @@
 		'Remove-DracoonUser'
 		'Request-DracoonOAuthToken'
 		'Search-DracoonNode'
+		'Send-DracoonDownloadShareMail'
 		'Set-DracoonRoomAcl'
 		'Set-DracoonUrl'
 		'Set-DracoonUserAttribute'

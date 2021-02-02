@@ -1,7 +1,7 @@
 ﻿function New-DracoonDownloadShare {
     <#
     .SYNOPSIS
-    Creates a Download Share for an existing file noee
+    Creates a Download Share for an existing file node
 
     .DESCRIPTION
     API-POST /v4/shares/downloads
@@ -51,6 +51,9 @@
     .PARAMETER ExpirationDate
     Sets a date when the user will expire
 
+    .PARAMETER EnableException
+    If set to true, inner exceptions will be rethrown. Otherwise the an empty result will be returned.
+
     .EXAMPLE
     New-DracoonDownloadShare -Connection $connection -NodeId $NodeId -MaxDownloads 2
     Creates a download share which lasts for 2 downloads.
@@ -75,52 +78,22 @@
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '')]
     [CmdletBinding(DefaultParameterSetName = "Default")]
     param (
-        [parameter(Mandatory = $true, ParameterSetName = "Default")]
-        [parameter(Mandatory = $true, ParameterSetName = "Password")]
-        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
+        [parameter(Mandatory = $true)]
         [Dracoon]$Connection,
-        [parameter(Mandatory = $true, ParameterSetName = "Default")]
-        [parameter(Mandatory = $true, ParameterSetName = "Password")]
-        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
+        [parameter(Mandatory = $true)]
         [int]$NodeId,
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [string]$Notes = "",
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [string]$InternalNotes = "",
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [string]$ShareName = "Download-Share",
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [bool]$ShowCreatorName = $true,
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [bool]$ShowCreatorUsername = $false,
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
         [bool]$NotifyCreator = $true,
-        [parameter(Mandatory = $true, ParameterSetName = "Password")]
-        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
         [string[]]$TextMessageRecipients,
         [int]$MaxDownloads=0,
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $true, ParameterSetName = "Password")]
         [string]$Password,
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $true, ParameterSetName = "RandomPassword")]
         [switch]$RandomPassword,
-        [parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [parameter(Mandatory = $false, ParameterSetName = "Password")]
-        [parameter(Mandatory = $false, ParameterSetName = "RandomPassword")]
-        [datetime]$ExpirationDate
+        [datetime]$ExpirationDate,
+        [bool]$EnableException = $false
     )
     Write-PSFMessage "Creating Download Share for Node $NodeId"
     if ($RandomPassword){
@@ -173,5 +146,5 @@
         $result = Invoke-DracoonAPI @apiCallParameter
         # Write-PSFMessage "User erfolgreich angelegt"
         $result
-    } -PSCmdlet $PSCmdlet
+    } -PSCmdlet $PSCmdlet -EnableException $EnableException
 }
