@@ -149,7 +149,7 @@ $accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $client
 $connection=Connect-Dracoon -Url $url -AccessToken $accessToken
 ```
 
-Now we are connected to your server: What can we do? 
+Now we are connected to your server: What can we do?
 ```powershell
 # Query all Users and display the data in a table
 Get-DracoonUser -Connection $connection |ft
@@ -158,9 +158,9 @@ Get-DracoonUser -Connection $connection |ft
 Get-DracoonUser -Connection $connection -Filter 'login:cn:DonaldDuck'
 
 #Find all locked accounts and remove the users (Luckily it supports WhatIf)
-Get-DracoonUser -Connection $connection -Filter 'isLocked:eq:true' |Remove-DracoonUser -connection $connection -WhatIf 
+Get-DracoonUser -Connection $connection -Filter 'isLocked:eq:true' |Remove-DracoonUser -connection $connection -WhatIf
 ```
-If you need an overview of the existing commands use 
+If you need an overview of the existing commands use
 ```powershell
 # List available commands
 Get-Command -Module Dracoon
@@ -195,7 +195,9 @@ If you need a special function feel free to contribute to the project.
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. I'm currently preparing a CONTRIBUTE File with further insights to help with the module logic. Until then simply
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. For more details please take a look at the [CONTRIBUTE](docs/CONTRIBUTING.md#Contributing-to-this-repository) document
+
+Short stop:
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -203,20 +205,9 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-### API documentation
-The API is very well documented with swagger, documentation can either be found at https://dracoon.team/api/ or (for your custom installation) at https://yourdomain.com/api/.
 
-### Working with the layout
-This module was created with the help of [PSModuleDevelopment](https://github.com/PowershellFrameworkCollective/PSModuleDevelopment) and follows the default folder layout. Therefor the default rules apply:
-- Don't touch the psm1 file
-- Place functions you export in `functions/` (can have subfolders)
-- Place private/internal functions invisible to the user in `internal/functions` (can have subfolders)
-- Don't add code directly to the `postimport.ps1` or `preimport.ps1`.
-  Those files are designed to import other files only.
-- When adding files & folders, make sure they are covered by either `postimport.ps1` or `preimport.ps1`.
-  This adds them to both the import and the build sequence.
-
-
+## Limitations
+* The module only works for unencrypted Datarooms. Simple reason: Our instances do not use the ['Client-side Encryption'](https://support.dracoon.com/hc/en-us/articles/360000986345-Whitepaper-Client-side-Encryption-) feature. If your instance does provide it feel free to add the feature to the module.
 
 <!-- LICENSE -->
 ## License

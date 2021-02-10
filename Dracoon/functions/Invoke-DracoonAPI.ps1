@@ -4,35 +4,47 @@
     Generic API Call to the Dracoon API.
 
     .DESCRIPTION
-    Generic API Call to the Dracoon API.
+    Generic API Call to the Dracoon API. This function is a wrapper for the usage of Invoke-WebRequest. It handles some annoying repetitive tasks which occur in most use cases. This includes (list may be uncompleted)
+    - Connecting to a server with authentication
+    - Parsing API parameter
+    - Handling $null parameter
+    - Paging for API endpoints which do only provide limited amounts of datasets
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class [Dracoon], stores the authentication Token and the API Base-URL. Can be obtained with Connect-Dracoon.
 
     .PARAMETER Path
-    API Path to the REST function
+    API Path to the REST function, starting *after* /api.
+    Example: "/v4/users"
 
     .PARAMETER Body
-    Parameter for the API call; Converted to the POST body
+    Parameter for the API call; The hashtable is Converted to the POST body by using ConvertTo-Json
 
-    .PARAMETER UrlParameter
-    Parameter for the API call; Converted to the GET URL parameter set
+    .PARAMETER URLParameter
+    Parameter for the API call; Converted to the GET URL parameter set.
+    Example:
+    {
+        id=4
+        name=Jon Doe
+    }
+    will result in "?id=4&name=Jon%20Doe" being added to the URL Path
 
     .PARAMETER Method
-    HTTP Method
+    HTTP Method, Get/Post/Delete/Put/...
 
     .PARAMETER ContentType
     HTTP-ContentType, defaults to "application/json;charset=UTF-8"
+    See Publish-DracoonFile for usage.
 
     .PARAMETER InFile
-    File which should be transfered during the Request.
+    File which should be transferred during the Request.
+    See Publish-DracoonFile for usage.
 
     .PARAMETER HideParameters
     If set to $true the password is hidden from logging
 
     .PARAMETER EnablePaging
-    Wenn die API mit Paging arbeitet, kann über diesn Parameter ein automatisches Handling aktivieren.
-    Dann werden alle Pages abgehandelt und nur die items zurückgeliefert.
+    If the API makes use of paging (therefor of limit/offset URLParameter) setting EnablePaging to $true will not return the raw data but a combination of all data sets.
 
     .PARAMETER EnableException
     If set to true, inner exceptions will be rethrown. Otherwise the an empty result will be returned.
@@ -51,7 +63,7 @@
         [parameter(Mandatory)]
         [string]$Path,
         [Hashtable] $Body,
-        [Hashtable] $UrlParameter,
+        [Hashtable] $URLParameter,
         [parameter(Mandatory)]
         [Microsoft.Powershell.Commands.WebRequestMethod]$Method,
         [bool] $HideParameters = $false,
@@ -61,9 +73,9 @@
         [switch]$EnablePaging
     )
     $uri = $connection.webServiceRoot + $path
-    if ($UrlParameter) {
+    if ($URLParameter) {
         Write-PSFMessage "Wandle URL Parameter in String um und hänge diese an die URI"
-        $parameterString = (Get-EncodedParameterString($UrlParameter))
+        $parameterString = (Get-EncodedParameterString($URLParameter))
         $uri = $uri + '?' + $parameterString.trim("?")
     }
     $restAPIParameter = @{
@@ -102,21 +114,21 @@
             Write-PSFMessage "Paging enabled, starte Schleife, result.range=$($result.range)"
             $allItems = ($result.items)
             write-psfmessage "Anzahl ermittelter Items: $($allItems.count)"
-            $UrlParameter.limit = $result.range.limit
-            $UrlParameter.offset = $result.range.offset
+            $URLParameter.limit = $result.range.limit
+            $URLParameter.offset = $result.range.offset
             while ($result.range.total -gt $allItems.count) {
                 Write-PSFMessage "result.range.total=$($result.range.total) -gt allItems.count=$($allItems.count)"
-                $UrlParameter.offset = $allItems.count
+                $URLParameter.offset = $allItems.count
                 $nextParameter = @{
                     Connection     = $Connection
                     Path           = $Path
                     Body           = $Body
-                    UrlParameter   = $UrlParameter
+                    URLParameter   = $URLParameter
                     Method         = $Method
                     HideParameters = $HideParameters
                 }
                 write-psfmessage "Rufe API auf mit $($nextParameter|convertto-json -depth 10)" -Level Debug
-                write-psfmessage "Rufe API auf mit URL Params auf $($UrlParameter|convertto-json -depth 10)"
+                write-psfmessage "Rufe API auf mit URL Params auf $($URLParameter|convertto-json -depth 10)"
 
                 $result = Invoke-DracoonAPI @nextParameter
                 $allItems += ($result.items)
@@ -133,16 +145,5 @@
             return
         }
     }
-    #---------------------------------------------------------------------------------
-    # Ist das Objekt zu groß wird es als String und nicht als PSCustomObject
-    # ausgegeben. Dieses wird dann mit dieser Methode in ein .DictionaryEntry-Object
-    # umgewandelt, um damit arbeiten zu können.
-    #---------------------------------------------------------------------------------
-    # if ($result.gettype().name -eq "String") {
-    #     $jsonresult = $connection.jsonserial.DeserializeObject($result)
-    #     return $jsonresult
-    # }
-    # else {
     return $result
-    # }
 }
