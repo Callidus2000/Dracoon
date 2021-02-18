@@ -74,14 +74,15 @@
     )
     $uri = $connection.webServiceRoot + $path
     if ($URLParameter) {
-        Write-PSFMessage "Wandle URL Parameter in String um und hänge diese an die URI"
+        Write-PSFMessage "Converting UrlParameter to a Request-String and add it to the path"
+        Write-PSFMessage "$($UrlParameter|ConvertTo-Json)"
         $parameterString = (Get-EncodedParameterString($URLParameter))
         $uri = $uri + '?' + $parameterString.trim("?")
     }
     $restAPIParameter = @{
         Uri         = $Uri
         method      = $Method
-        body        = ($Body | Remove-NullFromHashtable -Json)
+        body        = ($Body | Remove-NullFromHashtable)
         Headers     = $connection.headers
         ContentType = $ContentType
     }
@@ -91,21 +92,9 @@
     If ($InFile) {
         $restAPIParameter.InFile = $InFile
     }
-    Write-PSFMessage -Message "$(("$Method").ToUpper()) $uri" -Target $connection
-
-    $tempBody = $body
-    if ($hideParameters) {
-        if ($tempBody.ContainsKey("password")) { $tempBody.set_Item("password", "*****") }
-    }
-    if ($tempBody) {
-        Write-PSFMessage ("Rufe {0} mit {1} auf" -f $uri, ($tempBody  | Remove-NullFromHashtable -Json))
-    }
-    else {
-        Write-PSFMessage ("Rufe {0} auf" -f $uri)
-    }
 
     try {
-        Write-PSFMessage -Level Debug "restAPIParameter= $($restAPIParameter|ConvertTo-Json -Depth 5)"
+        Write-DracoonAPICallMessage $restAPIParameter
         $result = Invoke-RestMethod @restAPIParameter
         Write-PSFMessage -Level Debug "result= $($result|ConvertTo-Json -Depth 5)"
         if ($EnablePaging -and ($result -is [array])) {
@@ -127,9 +116,7 @@
                     Method         = $Method
                     HideParameters = $HideParameters
                 }
-                write-psfmessage "Rufe API auf mit $($nextParameter|convertto-json -depth 10)" -Level Debug
-                write-psfmessage "Rufe API auf mit URL Params auf $($URLParameter|convertto-json -depth 10)"
-
+                Write-DracoonAPICallMessage $nextParameter
                 $result = Invoke-DracoonAPI @nextParameter
                 $allItems += ($result.items)
             }

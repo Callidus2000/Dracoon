@@ -48,6 +48,7 @@
 		'Get-DracoonCurrentAccount'
 		'Get-DracoonGroup'
 		'Get-DracoonLastAdminRoom'
+		'Get-DracoonAPILog'
 		'Get-DracoonNode'
 		'Get-DracoonNodeAsZip'
 		'Get-DracoonRoomAcl'
