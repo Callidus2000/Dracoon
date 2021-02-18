@@ -103,13 +103,30 @@
             "authorization_code" {
                 $parameter = @{  grant_type = "authorization_code"; code = $AuthToken ; redirect_uri =$callbackUrl}
                 # $parameter="foo=bar&grant_type=authorization_code&code=$AuthToken&redirect_uri=$callbackUrl&bar=foo"
-                Write-PSFMessage "parameter=$($parameter|convertto-json)"
+                # Write-PSFMessage "parameter=$($parameter|convertto-json)"
             }
             Default { Write-PSFMessage -Level Critical "Unknown ParameterSetName $($PSCmdlet.ParameterSetName)"}
         }
+        # Write-PSFMessage "parameter=$($parameter|convertto-json)"
         try {
-            $tokenResponse = Invoke-WebRequest -URI "$serverRoot/oauth/token" -Method Post -ContentType "application/x-www-form-urlencoded" -Body $parameter -Headers @{Authorization = ("Basic {0}" -f $Base64AuthInfo) }
-            Write-PSFMessage "tokenResponse=$tokenResponse"
+            $tokenParameter=@{
+                URI = "$serverRoot/oauth/token"
+                Method="Post"
+                ContentType="application/x-www-form-urlencoded"
+                Body        = $parameter  #($parameter | convertto-json)
+                Headers= @{
+                    Authorization = ("Basic {0}" -f $Base64AuthInfo)
+                }
+            }
+        }
+        catch {
+            write-host "Exception $_"
+        }
+        # Write-PSFMessage "tokenParameter=$($tokenParameter|convertto-json)"
+        try {
+            Write-DracoonAPICallMessage $tokenParameter
+            $tokenResponse = Invoke-WebRequest @tokenParameter
+            # Write-PSFMessage "tokenResponse=$tokenResponse"
             if (($TokenType -eq 'access') -or $RefreshToken) {
                 $token = (ConvertFrom-Json $tokenResponse.Content).access_token
             }
@@ -119,10 +136,11 @@
             return $token
         }
         catch {
+            write-host "Exception $_"
+            Write-PSFMessage "Exception: $_"
             $streamReader = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
             $errResp = $streamReader.ReadToEnd() | ConvertFrom-Json
             $streamReader.Close()
-            Write-PSFMessage "Exception: $_"
             Write-PSFMessage "Error-Response=$ErrResp"
         }
     }
