@@ -99,28 +99,23 @@
         $Base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $ClientID, $ClientSecret)))
         switch ($PSCmdlet.ParameterSetName) {
             "password" { $parameter = @{ "grant_type" = "password"; "username" = $Credential.UserName; "password" = $Credential.GetNetworkCredential().password } }
-            "refresh_token" { $parameter = @{ "grant_type" = "refresh_token"; "refresh_token" = "$RefreshToken" }}
+            "refresh_token" { $parameter = @{ "grant_type" = "refresh_token"; "refresh_token" = "$RefreshToken" } }
             "authorization_code" {
-                $parameter = @{  grant_type = "authorization_code"; code = $AuthToken ; redirect_uri =$callbackUrl}
+                $parameter = @{  grant_type = "authorization_code"; code = $AuthToken ; redirect_uri = $callbackUrl }
                 # $parameter="foo=bar&grant_type=authorization_code&code=$AuthToken&redirect_uri=$callbackUrl&bar=foo"
                 # Write-PSFMessage "parameter=$($parameter|convertto-json)"
             }
-            Default { Write-PSFMessage -Level Critical "Unknown ParameterSetName $($PSCmdlet.ParameterSetName)"}
+            Default { Write-PSFMessage -Level Critical "Unknown ParameterSetName $($PSCmdlet.ParameterSetName)" }
         }
         # Write-PSFMessage "parameter=$($parameter|convertto-json)"
-        try {
-            $tokenParameter=@{
-                URI = "$serverRoot/oauth/token"
-                Method="Post"
-                ContentType="application/x-www-form-urlencoded"
-                Body        = $parameter  #($parameter | convertto-json)
-                Headers= @{
-                    Authorization = ("Basic {0}" -f $Base64AuthInfo)
-                }
+        $tokenParameter = @{
+            URI         = "$serverRoot/oauth/token"
+            Method      = "Post"
+            ContentType = "application/x-www-form-urlencoded"
+            Body        = $parameter  #($parameter | convertto-json)
+            Headers     = @{
+                Authorization = ("Basic {0}" -f $Base64AuthInfo)
             }
-        }
-        catch {
-            write-host "Exception $_"
         }
         # Write-PSFMessage "tokenParameter=$($tokenParameter|convertto-json)"
         try {
@@ -136,7 +131,6 @@
             return $token
         }
         catch {
-            write-host "Exception $_"
             Write-PSFMessage "Exception: $_"
             $streamReader = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
             $errResp = $streamReader.ReadToEnd() | ConvertFrom-Json
