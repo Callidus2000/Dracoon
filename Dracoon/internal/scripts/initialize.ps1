@@ -1,2 +1,2 @@
-﻿Export-PSFModuleClass -ClassType ([Dracoon])
+﻿# Export-PSFModuleClass -ClassType ([Dracoon])
 [System.Net.ServicePointManager]::SecurityProtocol = "Tls12"

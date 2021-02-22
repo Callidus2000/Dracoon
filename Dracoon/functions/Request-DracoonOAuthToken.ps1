@@ -119,7 +119,7 @@
         }
         # Write-PSFMessage "tokenParameter=$($tokenParameter|convertto-json)"
         try {
-            Write-DracoonAPICallMessage $tokenParameter
+            Write-ARAHCallMessage $tokenParameter
             $tokenResponse = Invoke-WebRequest @tokenParameter
             # Write-PSFMessage "tokenResponse=$tokenResponse"
             if (($TokenType -eq 'access') -or $RefreshToken) {

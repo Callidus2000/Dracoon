@@ -23,7 +23,6 @@
                     Method         = $Method
                     HideParameters = $HideParameters
                 }
-                Write-DracoonAPICallMessage $nextParameter
                 $result = Invoke-DracoonAPI @nextParameter
                 $allItems += ($result.items)
             }

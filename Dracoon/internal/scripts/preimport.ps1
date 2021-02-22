@@ -14,4 +14,4 @@ $moduleRoot = Split-Path (Split-Path $PSScriptRoot)
 "$moduleRoot\internal\scripts\strings.ps1"
 
 # Load Classes
-(Get-ChildItem "$moduleRoot\internal\classes\*.ps1" -ErrorAction Ignore).FullName
+#(Get-ChildItem "$moduleRoot\internal\classes\*.ps1" -ErrorAction Ignore).FullName
