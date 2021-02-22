@@ -21,7 +21,7 @@ function Remove-DracoonUser {
     Delete a user. API-DELETE /v4/users/{user_id}
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Id
     ID of the User which should be deleted.
@@ -45,7 +45,7 @@ function Remove-DracoonUser {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     param (
         [parameter(Mandatory)]
-        [Dracoon]$connection,
+        $connection,
         [parameter(Mandatory, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [int]$Id,
         [bool]$DeleteLastAdminRooms = $false

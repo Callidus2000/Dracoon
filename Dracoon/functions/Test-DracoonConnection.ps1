@@ -7,7 +7,7 @@
     Test connection to DRACOON Server. API-GET /v4/auth/ping
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .EXAMPLE
     Test-DracoonConnection $connection
@@ -19,22 +19,23 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection
+        $Connection
     )
     $apiCallParameter = @{
         Connection   = $Connection
         method       = "Get"
-        Path         ="/v4/auth/ping"
+        Path       = "/v4/config/info/infrastructure"
     }
 try {
-    $result=Invoke-DracoonAPI @apiCallParameter
+    $result=Invoke-DracoonAPI @apiCallParameter -EnableException $true
     Write-PSFMessage "Ping result: $result"
-    if ($result -notmatch '^OK'){
-        throw [System.Net.NetworkInformation.PingException]::new("API not pingable, $($connection.serverRoot)/v4/auth/ping")
-    }
+    # if ($result -notmatch '^OK'){
+    #     throw [System.Net.NetworkInformation.PingException]::new("API not pingable, $($connection.serverRoot)/v4/auth/ping")
+    # }
 }
 catch {
-    throw [System.Net.NetworkInformation.PingException]::new("API not pingable, $($connection.serverRoot)/v4/auth/ping")
+    return $false
+    # throw [System.Net.NetworkInformation.PingException]::new("API not pingable, $($connection.serverRoot)/v4/auth/ping")
 }
     $true
 }

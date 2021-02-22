@@ -7,7 +7,7 @@
     API-POST /v4/shares/downloads
 
     .PARAMETER connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER NodeId
     Node-ID  of the file
@@ -79,7 +79,7 @@
     [CmdletBinding(DefaultParameterSetName = "Default")]
     param (
         [parameter(Mandatory = $true)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory = $true)]
         [int]$NodeId,
         [string]$Notes = "",

@@ -21,11 +21,6 @@ Describe  "Connection tests" {
             $connection | Should -BeNullOrEmpty
             { Test-DracoonConnection -Connection $connection } | Should -Throw "Cannot bind argument*"
         }
-        # It "Anmeldung ohne OAuth, falsche URL"{
-        #     $wrongCreds = new-object -typename System.Management.Automation.PSCredential -argumentlist "anonymous", (ConvertTo-SecureString "password" -AsPlainText -Force)
-        #     $connection=Connect-Dracoon -Url "https://this.does.not.exist" -Credential $wrongCreds
-        #     $connection |Should -BeNullOrEmpty
-        # }
         It "Anmeldung ohne OAuth" {
             $connection = Connect-Dracoon -Url "https://$fqdn" -Credential $credentials
             $connection | Should -Not -BeNullOrEmpty
@@ -81,7 +76,7 @@ Describe  "Connection tests" {
                 $accessToken | Should -Match "\w{32}" -Because "AccessToken is alphanumeric and 32 long"
                 $connection=Connect-Dracoon -Url "https://$fqdn" -AccessToken $accessToken
                 $connection.webServiceRoot="$($connection.webServiceRoot)/notAvailable"
-                { Test-DracoonConnection -Connection $connection } | Should -Throw "API not pingable*"
+                Test-DracoonConnection -Connection $connection  | Should -Be $false
             }
         }
     }

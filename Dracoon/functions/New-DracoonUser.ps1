@@ -7,7 +7,7 @@
     Create a new user. Two option sets are possible: Mail-User (internal authentication) or Active Directory based authentification.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Login
     Unique login for the user, UPN/MAIL format expected
@@ -60,7 +60,7 @@
     param (
         [parameter(mandatory = $true, ParameterSetName = "Mailuser")]
         [parameter(mandatory = $true, ParameterSetName = "ADuser")]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(mandatory = $true, ParameterSetName = "Mailuser")]
         [parameter(mandatory = $true, ParameterSetName = "ADuser")]
         [PSFValidateScript( { $_ -as [mailaddress] }, ErrorMessage = "{0} - is not a valid mail address")]

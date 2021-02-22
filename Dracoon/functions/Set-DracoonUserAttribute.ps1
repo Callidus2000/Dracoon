@@ -23,7 +23,7 @@ function Set-DracoonUserAttribute {
     Set custom user attributes. Uses POST for overwriting the userAttributes or PUT for updating the userAttributes.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER id
     ID of the user to be changed.
@@ -50,7 +50,7 @@ function Set-DracoonUserAttribute {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     param (
         [parameter(mandatory = $true)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory)]
         [int]$Id,
         [Hashtable]$UserAttributes,

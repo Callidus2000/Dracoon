@@ -111,12 +111,36 @@
 	)
 
 	begin {
+		$connection = Get-ARAHConnection -Url $Url -APISubPath "/api"
+		$connection.ContentType = "application/json;charset=UTF-8"
+
 		Write-PSFMessage "Stelle Verbindung her zu $Url" -Target $Url
 		if ($PSCmdlet.ParameterSetName -eq 'deprecatedLogin') {
-			# $connection = [Dracoon]::new($Credential, $Url)
+			# $connection = ::new($Credential, $Url)
 			Invoke-PSFProtectedCommand -ActionString "Connect-Dracoon.Connecting" -ActionStringValues $Url -Target $Url -ScriptBlock {
-				# $connection = [Dracoon]::new($Credential.username, $Credential.GetNetworkCredential().password, $Url)
-				$connection = [Dracoon]::new($Credential, $Url)
+				# $connection = ::new($Credential.username, $Credential.GetNetworkCredential().password, $Url)
+    $apiCallParameter = @{
+					Connection   = $Connection
+					method       = "Post"
+					Path         = "/v4/auth/login"
+					Body = @{
+						login    = $Credential.UserName
+						password = $Credential.GetNetworkCredential().Password
+						language = "1"
+						authType = "sql"
+					}
+    }
+				# $parameter = @{
+				# 	login = $Credential.UserName
+				# 	password = $Credential.GetNetworkCredential().Password
+				# 	language = "1"
+				# 	authType = "sql"
+				# }
+				# $result = Invoke-DracoonAPI -connection $connection -path "/v4/auth/login"  -body $parameter -method Post
+				$result = Invoke-DracoonAPI @apiCallParameter
+				$connection.authenticatedUser = $Credential.UserName
+				$connection.headers.Add("X-Sds-Auth-Token", $result.token)
+
 			} -PSCmdlet $PSCmdlet  -EnableException $EnableException
 		}
 		else{
@@ -124,7 +148,8 @@
 				Write-PSFMessage "Aquiring AccessToken with splatting, ParameterSetName=$($PSCmdlet.ParameterSetName)"
 				$AccessToken=Request-DracoonOAuthToken @PSBoundParameters
 			}
-			$connection = [Dracoon]::new($AccessToken,$Url)
+			$connection.authenticatedUser = "OAuth"
+			$connection.headers.Add("Authorization", "Bearer $AccessToken")
 		}
 	}
 	process {

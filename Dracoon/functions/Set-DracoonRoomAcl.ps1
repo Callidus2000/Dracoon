@@ -7,7 +7,7 @@
     Batch function. All existing user permissions will be overwritten.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER NodeId
     ID of the room
@@ -49,7 +49,7 @@
 
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory)]
         [int]$NodeId,
         [array]$NewPermission

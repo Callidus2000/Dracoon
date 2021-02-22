@@ -18,7 +18,7 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection
+        $Connection
     )
     $apiCallParameter = @{
         Connection   = $Connection

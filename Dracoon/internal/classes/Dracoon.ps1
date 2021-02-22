@@ -25,7 +25,7 @@ Class Dracoon {
     }
     Dracoon ([String]$AccessToken, [string]$baseUrl) {
         # [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-        Write-PSFMessage "Verbinde Dracoon $baseUrl mittels AccessToken $AccessToken" -functionName "[Dracoon]::new(AccessToken, baseUrl)"
+        Write-PSFMessage "Verbinde Dracoon $baseUrl mittels AccessToken $AccessToken" -functionName "::new(AccessToken, baseUrl)"
 
         $this.serverRoot = Get-DracoonServerRoot $baseUrl
         $this.webServiceRoot = "$($this.serverRoot)/api"

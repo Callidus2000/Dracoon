@@ -7,7 +7,7 @@
     Retrieve a list of user attributes.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Id
     ID of the User.
@@ -58,7 +58,7 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$connection,
+        $connection,
         [parameter(Mandatory)]
         [int]$Id,
         [bool]$ReturnHashTable = $true,

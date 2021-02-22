@@ -7,7 +7,7 @@
     Uploads a file to an already existing dataroom.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER FilePath
     Filepath of the file which should get uploaded.
@@ -50,7 +50,7 @@
 
     param (
         [parameter(mandatory = $true)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(mandatory = $true)]
         [string]$FilePath,
         [parameter(mandatory = $true)]

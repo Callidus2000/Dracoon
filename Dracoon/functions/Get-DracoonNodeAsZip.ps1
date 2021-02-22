@@ -7,7 +7,7 @@
     Creates a ZIP archive from given NodeIDs and downloads it.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Id
     Array of NodeIDs which should be included into the ZIP file.
@@ -27,7 +27,7 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [int[]]$Id,
         [parameter(Mandatory)]

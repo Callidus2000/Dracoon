@@ -11,7 +11,7 @@
     - Paging for API endpoints which do only provide limited amounts of datasets
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL. Can be obtained with Connect-Dracoon.
+    Object of Class , stores the authentication Token and the API Base-URL. Can be obtained with Connect-Dracoon.
 
     .PARAMETER Path
     API Path to the REST function, starting *after* /api.
@@ -72,6 +72,8 @@
         [bool]$EnableException=$true,
         [switch]$EnablePaging
     )
+    return Invoke-ARAHRequest @PSBoundParameters -PagingHandler 'Dracoon.PagingHandler'
+
     $uri = $connection.webServiceRoot + $path
     if ($URLParameter) {
         Write-PSFMessage "Converting UrlParameter to a Request-String and add it to the path"

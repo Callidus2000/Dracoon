@@ -8,7 +8,7 @@
     If using in Multi-User Mode (without Id parameter) it returns an array of all users.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL.
+    Object of Class , stores the authentication Token and the API Base-URL.
 
     .PARAMETER Filter
     All filter fields are connected via logical conjunction (AND)
@@ -76,7 +76,7 @@
     [CmdletBinding(DefaultParameterSetName = "SingleUser")]
     Param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.filter")]
         [parameter(Mandatory = $false, ParameterSetName = "MultipleUsers")]
         [string]$Filter,

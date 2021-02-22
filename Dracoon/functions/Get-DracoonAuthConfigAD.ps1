@@ -19,7 +19,7 @@
     #>
         param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [string]$Alias
         )
         $apiCallParameter = @{

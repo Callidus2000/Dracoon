@@ -12,7 +12,7 @@ function Get-DracoonLastAdminRoom {
     Retrieve a list of all rooms where the user is last admin (except homeroom and its subordinary rooms).
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL.
+    Object of Class , stores the authentication Token and the API Base-URL.
 
     .PARAMETER Id
     ID of the user
@@ -26,7 +26,7 @@ function Get-DracoonLastAdminRoom {
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory)]
         [int]$Id
     )

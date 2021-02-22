@@ -27,6 +27,7 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.4.149' }
+		@{ ModuleName='ARAH'; ModuleVersion='1.0.0' }
 	)
 
 	# Assemblies that must be loaded prior to importing this module

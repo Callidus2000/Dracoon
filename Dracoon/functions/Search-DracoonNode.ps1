@@ -8,7 +8,7 @@
     Provides a flat list of file system nodes (rooms, folders or files) of a given parent that are accessible by the current user.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Filter
     All filter fields are connected via logical conjunction (AND)
@@ -69,7 +69,7 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.filter")]
         [string]$Filter,
         [int]$Limit=500,

@@ -11,7 +11,7 @@ function Get-DracoonRoomAcl {
     Retrieve a list of users that are and / or can be granted to the room.
 
     .PARAMETER Connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER NodeId
     ID of the room
@@ -60,7 +60,7 @@ function Get-DracoonRoomAcl {
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory)]
         [int]$NodeId,
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.filter")]

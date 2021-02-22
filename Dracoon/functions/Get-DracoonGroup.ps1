@@ -50,7 +50,7 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.filter")]
         [string]$Filter,
         [int]$Limit=500,

@@ -7,7 +7,7 @@
     API-POST /v4/shares/downloads/{share_id}/email
 
     .PARAMETER connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Id
     ID  of the existing Download Share
@@ -43,7 +43,7 @@
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
     param (
         [parameter(Mandatory = $true)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory = $true)]
         [int]$Id,
         [parameter(Mandatory = $true)]

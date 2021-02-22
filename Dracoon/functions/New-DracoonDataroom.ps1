@@ -8,7 +8,7 @@
     API-POST /v4/nodes/rooms
 
     .PARAMETER connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER RoomName
     Name of the new room
@@ -62,7 +62,7 @@
 
     param (
         [parameter(Mandatory)]
-        [Dracoon]$Connection,
+        $Connection,
         [parameter(Mandatory)]
         [string]$RoomName,
         [int]$ParentNodeId,

@@ -10,7 +10,7 @@
     GET /v4/nodes
 
     .PARAMETER connection
-    Object of Class [Dracoon], stores the authentication Token and the API Base-URL
+    Object of Class , stores the authentication Token and the API Base-URL
 
     .PARAMETER Filter
     All filter fields are connected via logical conjunction (AND)
@@ -60,7 +60,7 @@
     #>
     param (
         [parameter(Mandatory)]
-        [Dracoon]$connection,
+        $connection,
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.filter")]
         [string]$Filter,
         [int]$Limit=500,
