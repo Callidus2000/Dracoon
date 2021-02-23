@@ -21,7 +21,6 @@
                     Body           = $Body
                     URLParameter   = $URLParameter
                     Method         = $Method
-                    HideParameters = $HideParameters
                 }
                 $result = Invoke-DracoonAPI @nextParameter
                 $allItems += ($result.items)

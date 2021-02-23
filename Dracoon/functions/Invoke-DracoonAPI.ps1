@@ -40,9 +40,6 @@
     File which should be transferred during the Request.
     See Publish-DracoonFile for usage.
 
-    .PARAMETER HideParameters
-    If set to $true the password is hidden from logging
-
     .PARAMETER EnablePaging
     If the API makes use of paging (therefor of limit/offset URLParameter) setting EnablePaging to $true will not return the raw data but a combination of all data sets.
 
@@ -66,7 +63,6 @@
         [Hashtable] $URLParameter,
         [parameter(Mandatory)]
         [Microsoft.Powershell.Commands.WebRequestMethod]$Method,
-        [bool] $HideParameters = $false,
         [string]$ContentType = "application/json;charset=UTF-8",
         [string]$InFile,
         [bool]$EnableException=$true,
