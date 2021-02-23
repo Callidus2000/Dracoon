@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 1.3.0 (2021-02-23)
+ - Major internal redesign for using the ARAH module
 ## 1.2.3 (2021-02-02)
  - New function: Send-DracoonDownloadShareMail
  - New function: New-DracoonDownloadShare
