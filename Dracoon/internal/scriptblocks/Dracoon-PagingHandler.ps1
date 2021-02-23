@@ -2,7 +2,7 @@
     # $EnablePaging -eq $true
     Write-PSFMessage "Dracoon.PagingHandler" -ModuleName Dracoon -FunctionName 'Dracoon-PagingHandler'
     try {
-        if (($result -is [array])) {
+        if (($result -is [array]) -or ($null -eq ($result.range))) {
             Write-PSFMessage "Paging enabled, aber keine Range zurückgeliefert" -Level Warning  -ModuleName Dracoon -FunctionName 'Dracoon-PagingHandler'
             return $result
         }
