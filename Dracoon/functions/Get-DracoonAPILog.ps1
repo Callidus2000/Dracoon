@@ -14,6 +14,7 @@
 
     .EXAMPLE
     Get-DracoonAPILog -Last 5
+
     Retrieves the last 5 logs.
 
     .NOTES

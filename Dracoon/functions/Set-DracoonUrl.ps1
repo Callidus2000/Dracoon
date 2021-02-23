@@ -22,9 +22,12 @@
 
     .EXAMPLE
     Add-DracoonUrl 'https://dxi.mydomain'
+
     Add a single Server to the list of suggested URLs
 
+    .EXAMPLE
     (get-adforest -ErrorAction Stop).domains | ForEach-Object { Add-DracoonUrl "https://dataexchange.$($_)" }
+
     If you have an on prem Dracoon server in each of your Windows Domains with the address "https://dracoon.<yourdomain>"
     it will get added to the list of suggested URLs.
 

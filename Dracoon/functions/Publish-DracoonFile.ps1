@@ -38,6 +38,7 @@
 
     .EXAMPLE
     Publish-DracoonFile -Connection $connection -FilePath $fileName -ParentNodeId $roomId
+
     Performs an upload of $fileName
 
     .NOTES

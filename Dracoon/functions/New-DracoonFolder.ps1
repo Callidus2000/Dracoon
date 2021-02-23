@@ -29,6 +29,7 @@
 
     .EXAMPLE
     New-DracoonDataroom -Connection $connection -Name "MyFolder" -ParentRoomId $room.id
+
     Creates a folder within the defined room
 
     .NOTES

@@ -56,18 +56,22 @@
 
     .EXAMPLE
     New-DracoonDownloadShare -Connection $connection -NodeId $NodeId -MaxDownloads 2
+
     Creates a download share which lasts for 2 downloads.
 
     .EXAMPLE
     New-DracoonDownloadShare -Connection $connection -NodeId $NodeId -Password "fsdjfdsfhj8934234****"
+
     Creates a download share with set password
 
     .EXAMPLE
     New-DracoonDownloadShare -Connection $connection -NodeId $NodeId -RandomPassword
+
     Creates a download share with a random access password.
 
     .EXAMPLE
     New-DracoonDownloadShare -Connection $connection -NodeId $NodeId -RandomPassword -TextMessageRecipients "0123456789"
+
     Creates a download share with a random access password, sends the password to the given mobile number
 
     .NOTES

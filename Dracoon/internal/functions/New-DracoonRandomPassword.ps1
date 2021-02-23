@@ -13,6 +13,7 @@
 
     .EXAMPLE
     $newPassword=New-DracoonRandomPassword
+
     Creates a new password
 
     .NOTES

@@ -38,31 +38,36 @@
 
 	.EXAMPLE
 	$connection=Connect-Dracoon -Url $url -ClientID $clientId -ClientSecret $clientSecret -Credential $cred
+
 	Connect directly with OAuth and a Credential-Object
 
 	.EXAMPLE
-	# Connect Via pre-generated OAuth access token
 	## Generate accesstoken
 	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -Credential $cred -TokenType access
 	## Login with created access token
 	$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
 
+	Connect Via pre-generated OAuth access token
+
 	.EXAMPLE
-	# Connect Via pre-generated OAuth refresh token
 	## Create a refresh token
 	$refreshToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Credential $cred -url $url -TokenType refresh
 	## Connect directly with the refresh token
 	$connection=Connect-Dracoon -ClientID $clientId -ClientSecret $clientSecret -url $url -RefreshToken $refreshToken
 
+	Connect Via pre-generated OAuth refresh token
+
 	.EXAMPLE
-	## Second option: Create an access token from the refreh token and login with the access token.
 	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -RefreshToken $refreshToken
 	$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
 
+	Second option: Create an access token from the refreh token and login with the access token.
+
 	.EXAMPLE
-	# Direct auth with /auth/login (**Deprecated**)
 	## If you are running an older version it maybe possible to login directly. But this option is deprecated and [will be removed in every installation in the future](https://blog.dracoon.com/en/goodbye-x-sds-auth-token-hello-oauth-2.0)
 	$connection=Connect-Dracoon -Url $url -Credential $cred
+
+	Direct auth with /auth/login (**Deprecated**)
 
 	.NOTES
 	As you have to authenticate with OAuth2.0 it is neccessary to create a client application within the admin web-page. For this

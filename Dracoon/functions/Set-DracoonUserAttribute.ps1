@@ -1,20 +1,4 @@
-﻿#     [PSCustomObject]SetUserAttributes([int]$userId, [Hashtable]$userAttributes, [bool]$keepExisting) {
-#         $items = @()
-
-#         foreach ($key in $userAttributes.Keys) {
-#             $items += @{ key = $key ; value = $userAttributes[$key] }
-#         }
-#         $parameter = @{items = $items }
-#         if ($keepExisting) {
-#             $result = $this.InvokePut("/v4/users/$userId/userAttributes", $parameter)
-#         }
-#         else {
-#             $result = $this.InvokePost("/v4/users/$userId/userAttributes", $parameter)
-#         }
-#         return $result
-#     }
-
-function Set-DracoonUserAttribute {
+﻿function Set-DracoonUserAttribute {
     <#
     .SYNOPSIS
     Set custom user attributes. API-(POST/PUT) /v4/users/{user_id}/userAttributes
@@ -42,6 +26,7 @@ function Set-DracoonUserAttribute {
 
     .EXAMPLE
     To be added
+
     in the Future
 
     .NOTES

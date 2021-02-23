@@ -20,6 +20,7 @@
 
     .EXAMPLE
     Get-DracoonNode -connection $connection -ParentID $roomId | Get-DracoonNodeAsZip -Connection $connection -FileName "myArchive.zip"
+
     Creates a ZIP archive containing all files of the given room.
 
     .NOTES

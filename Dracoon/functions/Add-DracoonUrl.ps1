@@ -22,6 +22,7 @@
 
     .EXAMPLE
     Add-DracoonUrl 'https://dxi.mydomain'
+
     Add a single Server to the list of suggested URLs
 
     (get-adforest -ErrorAction Stop).domains | ForEach-Object { Add-DracoonUrl "https://dataexchange.$($_)" }

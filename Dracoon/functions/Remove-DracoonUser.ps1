@@ -1,18 +1,4 @@
-﻿#     [PSCustomObject]DeleteUser([int]$id, [bool]$deleteLastAdminRooms) {
-#         if ($deleteLastAdminRooms) {
-#             $LastAdminRooms = $this.getLastAdminRooms($id)
-#             if ($LastAdminRooms) {
-#                 Write-PSFMessage ("Lösche {0} LastAdminRooms" -f $LastAdminRooms.count)
-#                 $LastAdminRooms | Format-Table | Out-String | Write-PSFMessage
-#                 foreach ($room in $LastAdminRooms) {
-#                     $this.DeleteRoom($room.id)
-#                 }
-#             }
-#         }
-#         $result = $this.InvokeDelete("/v4/users/$id")
-#         return $result
-#     }
-function Remove-DracoonUser {
+﻿function Remove-DracoonUser {
     <#
     .SYNOPSIS
     Delete a user. API-DELETE /v4/users/{user_id}
@@ -37,6 +23,7 @@ function Remove-DracoonUser {
 
     .EXAMPLE
     To be added
+
     in the Future
 
     .NOTES

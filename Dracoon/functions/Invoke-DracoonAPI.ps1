@@ -48,6 +48,7 @@
 
     .EXAMPLE
     $result = Invoke-DracoonAPI -connection $this -path "/v4/auth/login" -method POST -body @{login = $credentials.UserName; password = $credentials.GetNetworkCredential().Password; language = "1"; authType = "sql" } -hideparameters $true
+
     Login to the service
 
     .NOTES

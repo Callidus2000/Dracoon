@@ -14,6 +14,7 @@ Get-DracoonServerRoot "my.server.de"
 Get-DracoonServerRoot "my.server.de/"
 Get-DracoonServerRoot "http://my.server.de"
 Get-DracoonServerRoot "http://my.server.de/"
+
 All versions return "https://my.server.de"
 
 .NOTES

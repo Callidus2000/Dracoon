@@ -29,9 +29,12 @@
     .EXAMPLE
     $rooms = Get-DracoonAuditDataroom -connection $connection -filter "nodeName:cn:DEMO"
     $hubbaRooms| Remove-DracoonNode -connection $connection
+
     Queries all rooms with "DEMO" within the nodeName and deletes them.
 
+    .EXAMPLE
     Remove-DracoonNode -connection $connection -NodeId 15
+
     Deletes the node with ID 15.
 
     .NOTES

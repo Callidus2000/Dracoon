@@ -11,6 +11,7 @@
 
     .EXAMPLE
     Test-DracoonConnection $connection
+
     Throws a [System.Net.NetworkInformation.PingException] if connection does not succeed, otherwise
     it returns $true
 

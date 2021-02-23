@@ -38,24 +38,27 @@
 
     .EXAMPLE
 	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -Credential $cred -TokenType access
-    #Creates an AccessToken which can be used for simple connection-
 	$connection=Connect-Dracoon -Url $url -AccessToken $accessToken
+
+    Creates an AccessToken which can be used for simple connection-
 
     .EXAMPLE
 	$refreshToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Credential $cred -url $url -TokenType refresh
-	# Creates a refresh token which can be exchanged for an accessToken.
 	$accessToken=Request-DracoonOAuthToken -ClientID $clientId -ClientSecret $clientSecret -Url $url -RefreshToken $refreshToken
+
+    Creates a refresh token which can be exchanged for an accessToken.
 
 	.EXAMPLE
     Request-DracoonOAuthToken -url $url -ClientID $ClientID
+
     Opens the default browser for aquiring an authorization code.
 
     .EXAMPLE
-    #Read authorization code and generate an access code from it.
     $tempCred = Get-Credential -Message "Please perform browser login" -UserName "Enter AuthorizationCode as PW"
     $authToken = $tempCred.GetNetworkCredential().Password
     $accessToken = Request-DracoonOAuthToken -url $url -ClientID $ClientID -clientSecret $clientSecret -AuthToken $authToken
 
+    Read authorization code and generate an access code from it.
 
     .NOTES
     General notes
