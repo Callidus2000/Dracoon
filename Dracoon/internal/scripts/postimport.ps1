@@ -27,3 +27,6 @@ $moduleRoot = Split-Path (Split-Path $PSScriptRoot)
 
 # Export Classes
 "$moduleRoot\internal\scripts\initialize.ps1"
+
+# Load and export functions which are created with the AutoRest-Module
+"$moduleRoot\internal\scripts\enable-autorest.ps1"

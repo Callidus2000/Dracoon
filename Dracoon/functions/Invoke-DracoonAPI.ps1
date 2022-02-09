@@ -20,6 +20,9 @@
     .PARAMETER Body
     Parameter for the API call; The hashtable is Converted to the POST body by using ConvertTo-Json
 
+    .PARAMETER Header
+    Additional Header Parameter for the API call; currently dropped but needed as a parameter for the *-DracoonAR* functions
+
     .PARAMETER URLParameter
     Parameter for the API call; Converted to the GET URL parameter set.
     Example:
@@ -61,6 +64,8 @@
         [parameter(Mandatory)]
         [string]$Path,
         [Hashtable] $Body,
+        [Hashtable] $Header,
+        [Alias("Query")]
         [Hashtable] $URLParameter,
         [parameter(Mandatory)]
         [Microsoft.Powershell.Commands.WebRequestMethod]$Method,
@@ -69,5 +74,12 @@
         [bool]$EnableException=$true,
         [switch]$EnablePaging
     )
-    return Invoke-ARAHRequest @PSBoundParameters -PagingHandler 'Dracoon.PagingHandler'
+    # Header parameter is dropped, see parameter help
+    $requestParameter = $PSBoundParameters | ConvertTo-PSFHashtable -exclude "Header"
+    if ($requestParameter.Path -notlike '/v4/*'){
+        Write-PSFMessage "Function-Call from an AutoRest-Function"
+        $requestParameter.Path = "/v4/" + $requestParameter.Path
+        $requestParameter.EnablePaging=$true
+    }
+    return Invoke-ARAHRequest @requestParameter -PagingHandler 'Dracoon.PagingHandler'
 }
