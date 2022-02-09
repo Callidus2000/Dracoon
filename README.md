@@ -183,6 +183,24 @@ effectiveRoles:eq:[true or false]  firstName:cn:[search String]
 isLocked:eq:[true or false]        lastName:cn:[search String]
 login:cn:[search String]
 ```
+## New Feature: Usage of Auto-Generated functions
+Since version 1.5.0 the module contains functions for **ALL** API endpoints. This was made possible with the help of Fred's [AutoRest-Module](https://github.com/FriedrichWeinmann/AutoRest/). All the **A**uto**R**est functions
+- are provided as-is
+  - no support from my side
+  - not tested or monitored by the pester tests
+- are stored in an internal module Folder
+- have the modulePrefix DracoonAR
+- have to be manually activated before module usage (use `Enable-DracoonAutoRest`).
+
+### Enable Auto-Generated functions before module import
+If you want to enable the functions before module import you can use the following code:
+```Powershell
+#For the current session
+Set-PSFConfig -Module 'Dracoon' -Name 'enableAutoRest' -Value $true -PassThru
+
+#Enabled as default
+Set-PSFConfig -Module 'Dracoon' -Name 'enableAutoRest' -Value $true -PassThru | Register-PSFConfig -Scope UserDefault
+```
 
 <!-- ROADMAP -->
 ## Roadmap

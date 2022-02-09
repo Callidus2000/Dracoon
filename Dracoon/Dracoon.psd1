@@ -44,6 +44,8 @@
 		'Add-DracoonUrl'
 		'Connect-Dracoon'
 		'Convert-DracoonGetSetRoomAcl'
+		'Disable-DracoonAutoRest'
+		'Enable-DracoonAutoRest'
 		'Get-DracoonAuditDataroom'
 		'Get-DracoonAuthConfigAD'
 		'Get-DracoonCurrentAccount'
