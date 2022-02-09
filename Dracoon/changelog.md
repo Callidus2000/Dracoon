@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 1.5.0 (2022-02-09)
+ - Added functions for all endpoints (created by AutoRest)
+## 1.4.0 (2021-12-14)
+ - Added Provisioning API functionality
 ## 1.3.0 (2021-02-23)
  - Major internal redesign for using the ARAH module
 ## 1.2.3 (2021-02-02)
