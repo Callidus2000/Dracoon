@@ -26,6 +26,7 @@
 		"Name" will be renamed to be lowercase if specified, "ID" will be renamed to "objectId" if specified.
 #>
 	[CmdletBinding()]
+	[OutputType([System.Collections.Hashtable])]
 	param (
 		[AllowEmptyCollection()]
 		[string[]]
