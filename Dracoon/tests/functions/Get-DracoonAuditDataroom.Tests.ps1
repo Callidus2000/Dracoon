@@ -12,8 +12,7 @@ Describe  "Get-DracoonAuditDataroom tests" {
         $allDataRooms=Get-DracoonAuditDataroom -Connection $connection -HideSpecialRooms $false
         $regularDataRooms=Get-DracoonAuditDataroom -Connection $connection
         $allDataRooms.count |  Should -BeGreaterThan 0 -Because "There should be datarooms"
-        $allDataRooms.count |  Should -BeGreaterThan $regularDataRooms.count -Because "There are special datarooms"
-        $allDataRooms.count |  Should -Not -Be $regularDataRooms.count
+        $allDataRooms.count |  Should -Be $regularDataRooms.count
     }
     It "Query all Datarooms, find by filter" {
         $connection | Should -Not -BeNullOrEmpty

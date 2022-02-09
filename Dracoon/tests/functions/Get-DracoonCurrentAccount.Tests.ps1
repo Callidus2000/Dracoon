@@ -7,7 +7,7 @@ Describe  "Get-DracoonCurrentAccount tests" {
         $currentUser = Get-DracoonCurrentAccount -Connection $connection
         $currentUser | Should -Not -BeNullOrEmpty
         $properties = $currentUser | get-member -MemberType NoteProperty | Select-Object -ExpandProperty name
-        $expectedProperties = @('email', 'firstName', 'gender', 'id', 'isLocked', 'lastLoginFailAt', 'lastLoginSuccessAt', 'lastName', 'lockStatus', 'login')
+        $expectedProperties = @('email', 'firstName', 'id', 'isLocked', 'lastLoginFailAt', 'lastLoginSuccessAt', 'lastName', 'lockStatus', 'login')
         foreach ($prop in $expectedProperties) {
             $properties | Should -Contain $prop
         }
