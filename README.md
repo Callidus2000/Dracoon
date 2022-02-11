@@ -109,12 +109,14 @@ The `AllowClobber` option is currently neccessary because of an issue in the cur
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-The module is a wrapper for the Dracoon API. As you have to authenticate with OAuth2.0 it is neccessary to create a client application within the admin web-page. For this
+The module is a wrapper for the Dracoon API. As you have to authenticate with OAuth2.0 it is necessary to create a client application within the admin web-page. For this
 * Go to _System Settings_ / _Apps_ in the navigation bar
 * Click on the _Add app_ button
 * Enter an application name (e.g. "Powershell Scripting")
 * enable all 4 checkboxes (authorization code:implicit:password:refresh token)
 * Copy the _Client ID_ and the _Client Secret_. Both will be referenced as `$ClientID` and `$ClientSecret`.
+
+If the Application "DRACOON Legacy Scripting Support" is activated you can use `dracoon_legacy_scripting` as ClientID and omit the ClientSecret.
 
 Now it's time to open the powershell. Prepare the basic variables:
 ```powershell

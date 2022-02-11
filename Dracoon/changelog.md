@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 1.5.1 (2022-02-11)
+ - Added option to authenticate via dracoon_legacy_scripting
 ## 1.5.0 (2022-02-09)
  - Added functions for all endpoints (created by AutoRest)
 ## 1.4.0 (2021-12-14)
