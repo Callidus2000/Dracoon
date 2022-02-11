@@ -12,6 +12,11 @@
 	an OAuth workflow. For OAuth you need to configure an application within the Web-UI. For more information
 	see about_Dracoon.
 
+DYNAMIC PARAMETERS
+-ClientSecret <secret>
+    Neccessary for OAuth Login: The Secret of the OAauth Client. Can be ommited if clientID -eq 'dracoon_legacy_scripting'
+	and legacy scripting access is activated within the Dracoon instance.
+
 	.PARAMETER Credential
 	Credential-Object for direct login.
 
@@ -29,9 +34,6 @@
 
 	.PARAMETER ClientID
 	Neccessary for OAuth Login: The Id of the OAauth Client.
-
-	.PARAMETER ClientSecret
-	Neccessary for OAuth Login: The Secret of the OAauth Client.
 
 	.PARAMETER EnableException
 	Should Exceptions been thrown?
@@ -88,34 +90,70 @@
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 	[CmdletBinding(DefaultParameterSetName = "AccessToken")]
 	Param (
-        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
-        [parameter(mandatory = $true, ParameterSetName = "password")]
-        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
-        [parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
+		[parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+		[parameter(mandatory = $true, ParameterSetName = "password")]
+		[parameter(mandatory = $true, ParameterSetName = "refresh_token")]
+		[parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
-        [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.url")]
-        [string]$Url,
-        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
-        [parameter(mandatory = $true, ParameterSetName = "password")]
-        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
-        [string]$ClientID,
-        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
-        [parameter(mandatory = $true, ParameterSetName = "password")]
-        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
-        [string]$ClientSecret,
-        [parameter(mandatory = $true, ParameterSetName = "password")]
-        [parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
-        [pscredential]$Credential,
-        [parameter(mandatory = $true, ParameterSetName = "authorization_code")]
-        [string]$AuthToken,
-        [parameter(mandatory = $true, ParameterSetName = "refresh_token")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.url")]
+		[string]$Url,
+		[parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+		[parameter(mandatory = $true, ParameterSetName = "password")]
+		[parameter(mandatory = $true, ParameterSetName = "refresh_token")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[string]$ClientID,
+		[parameter(mandatory = $true, ParameterSetName = "password")]
+		[parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
+		[parameter(mandatory = $false, ParameterSetName = "dracoon_legacy_scripting")]
+		[pscredential]$Credential,
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+		[string]$AuthToken,
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[parameter(mandatory = $true, ParameterSetName = "refresh_token")]
 		[string]$RefreshToken,
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
 		[string]$AccessToken,
 		[switch]$EnableException
 	)
+	DynamicParam {
+		# Neccessary for OAuth Login: The Secret of the OAauth Client.
+		Write-PSFMessage -Level Debug "Client-Secret-Check, `$PSCmdlet.ParameterSetName=$($PSCmdlet.ParameterSetName)"
+		If ($ClientID -ne "dracoon_legacy_scripting") {
+			$associatedParameterSets = @(
+				"authorization_code"
+				"refresh_token"
+				"password"
+			)
+			Write-PSFMessage -Level Debug "Client-Secret wird benötigt"
+
+			$paramDictionary = New-Object -Type System.Management.Automation.RuntimeDefinedParameterDictionary
+
+			# Defining parameter attributes
+			$attributeCollection = New-Object -Type System.Collections.ObjectModel.Collection[System.Attribute]
+			foreach ($ParameterSet in $associatedParameterSets) {
+				$attributes = New-Object System.Management.Automation.ParameterAttribute
+				$attributes.HelpMessage = 'Neccessary for OAuth Login: The Secret of the OAauth Client.'
+				$attributes.ParameterSetName = $ParameterSet
+				$attributes.Mandatory = $true
+				$attributeCollection.Add($attributes)
+			}
+
+
+			# Defining the runtime parameter
+			$dynParam1 = New-Object -Type System.Management.Automation.RuntimeDefinedParameter('ClientSecret', [String], $attributeCollection)
+			$paramDictionary.Add('ClientSecret', $dynParam1)
+
+			return $paramDictionary
+		}
+		else {
+			Write-PSFMessage -Level Debug "Client-Secret wird nicht benötigt"
+		}
+	} #end DynamicParam
 
 	begin {
+		$successFullConnected = $false
 		$connection = Get-ARAHConnection -Url $Url -APISubPath "/api"
 		$connection.ContentType = "application/json;charset=UTF-8"
 
@@ -123,43 +161,42 @@
 		if ($PSCmdlet.ParameterSetName -eq 'deprecatedLogin') {
 			# $connection = ::new($Credential, $Url)
 			Invoke-PSFProtectedCommand -ActionString "Connect-Dracoon.Connecting" -ActionStringValues $Url -Target $Url -ScriptBlock {
-				# $connection = ::new($Credential.username, $Credential.GetNetworkCredential().password, $Url)
-    $apiCallParameter = @{
-					Connection   = $Connection
-					method       = "Post"
-					Path         = "/v4/auth/login"
-					Body = @{
+				$apiCallParameter = @{
+					Connection = $Connection
+					method     = "Post"
+					Path       = "/v4/auth/login"
+					Body       = @{
 						login    = $Credential.UserName
 						password = $Credential.GetNetworkCredential().Password
 						language = "1"
 						authType = "sql"
 					}
-    }
-				# $parameter = @{
-				# 	login = $Credential.UserName
-				# 	password = $Credential.GetNetworkCredential().Password
-				# 	language = "1"
-				# 	authType = "sql"
-				# }
-				# $result = Invoke-DracoonAPI -connection $connection -path "/v4/auth/login"  -body $parameter -method Post
+				}
 				$result = Invoke-DracoonAPI @apiCallParameter
 				$connection.authenticatedUser = $Credential.UserName
+				if ($result.token) { $successFullConnected = $true }
 				$connection.headers.Add("X-Sds-Auth-Token", $result.token)
 
 			} -PSCmdlet $PSCmdlet  -EnableException $EnableException
 		}
-		else{
+		else {
 			if ($PSCmdlet.ParameterSetName -ne 'AccessToken') {
 				Write-PSFMessage "Aquiring AccessToken with splatting, ParameterSetName=$($PSCmdlet.ParameterSetName)"
-				$AccessToken=Request-DracoonOAuthToken @PSBoundParameters
+				$AccessToken = Request-DracoonOAuthToken @PSBoundParameters
 			}
-			$connection.authenticatedUser = "OAuth"
-			$connection.headers.Add("Authorization", "Bearer $AccessToken")
+			if ($AccessToken) {
+				$successFullConnected = $true
+				$connection.authenticatedUser = "OAuth"
+				$connection.headers.Add("Authorization", "Bearer $AccessToken")
+			}
 		}
 	}
 	process {
 		if (Test-PSFFunctionInterrupt) { return }
-		Write-PSFMessage -string "Connect-Dracoon.Connected"
-		$connection
+		if ($successFullConnected) {
+			Write-PSFMessage -string "Connect-Dracoon.Connected"
+			return $connection
+		}
+		Write-PSFMessage -string "Connect-Dracoon.NotConnected" -Level Warning
 	}
 }

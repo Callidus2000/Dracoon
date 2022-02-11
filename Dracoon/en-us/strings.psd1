@@ -3,4 +3,5 @@
 @{
 	'Connect-Dracoon.Connecting' = 'Connecting to instance {0}'
 	'Connect-Dracoon.Connected'  = 'Connection established' #
+	'Connect-Dracoon.NotConnected'  = 'Connection could not be established' #
 }
