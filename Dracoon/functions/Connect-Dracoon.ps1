@@ -14,7 +14,7 @@
 
 DYNAMIC PARAMETERS
 -ClientSecret <secret>
-    Neccessary for OAuth Login: The Secret of the OAauth Client. Can be ommited if clientID -eq 'dracoon_legacy_scripting'
+    Neccessary for OAuth Login: The Secret of the OAauth Client. Can be ommited if clientID -eq 'dracoon_legacy_scriptingToken'
 	and legacy scripting access is activated within the Dracoon instance.
 
 	.PARAMETER Credential
@@ -95,22 +95,25 @@ DYNAMIC PARAMETERS
 		[parameter(mandatory = $true, ParameterSetName = "refresh_token")]
 		[parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
-		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingToken")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingCredential")]
 		[PSFramework.TabExpansion.PsfArgumentCompleterAttribute("Dracoon.url")]
 		[string]$Url,
 		[parameter(mandatory = $true, ParameterSetName = "authorization_code")]
 		[parameter(mandatory = $true, ParameterSetName = "password")]
 		[parameter(mandatory = $true, ParameterSetName = "refresh_token")]
-		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingToken")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingCredential")]
 		[string]$ClientID,
 		[parameter(mandatory = $true, ParameterSetName = "password")]
 		[parameter(mandatory = $true, ParameterSetName = "deprecatedLogin")]
-		[parameter(mandatory = $false, ParameterSetName = "dracoon_legacy_scripting")]
+		# [parameter(mandatory = $false, ParameterSetName = "dracoon_legacy_scriptingToken")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingCredential")]
 		[pscredential]$Credential,
-		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
-		[parameter(mandatory = $true, ParameterSetName = "authorization_code")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingToken")]
+		# [parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingCredential")]
 		[string]$AuthToken,
-		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scripting")]
+		[parameter(mandatory = $true, ParameterSetName = "dracoon_legacy_scriptingToken")]
 		[parameter(mandatory = $true, ParameterSetName = "refresh_token")]
 		[string]$RefreshToken,
 		[parameter(mandatory = $true, ParameterSetName = "AccessToken")]
@@ -120,7 +123,7 @@ DYNAMIC PARAMETERS
 	DynamicParam {
 		# Neccessary for OAuth Login: The Secret of the OAauth Client.
 		Write-PSFMessage -Level Debug "Client-Secret-Check, `$PSCmdlet.ParameterSetName=$($PSCmdlet.ParameterSetName)"
-		If ($ClientID -ne "dracoon_legacy_scripting") {
+		If ($ClientID -ne "dracoon_legacy_scriptingToken") {
 			$associatedParameterSets = @(
 				"authorization_code"
 				"refresh_token"
