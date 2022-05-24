@@ -4,4 +4,5 @@
 # Needs to ensure things are Done Right and only legal commits to master get built
 
 # Run internal pester tests
-& "$PSScriptRoot\..\Dracoon\tests\pester.ps1"
+# without the Functional tests as the test-systems are not cloud available
+& "$PSScriptRoot\..\Dracoon\tests\pester.ps1"  -TestFunctions $false
