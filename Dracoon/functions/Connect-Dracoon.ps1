@@ -198,6 +198,8 @@ DYNAMIC PARAMETERS
 		if (Test-PSFFunctionInterrupt) { return }
 		if ($successFullConnected) {
 			Write-PSFMessage -string "Connect-Dracoon.Connected"
+			Add-Member -InputObject $connection -MemberType NoteProperty -Name "restApiVersion" -Value (Get-DracoonARPublicSoftwareVersion -Connection $connection).restApiVersion
+
 			return $connection
 		}
 		Write-PSFMessage -string "Connect-Dracoon.NotConnected" -Level Warning
