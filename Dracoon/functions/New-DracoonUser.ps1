@@ -88,20 +88,20 @@
         [parameter(mandatory = $false, ParameterSetName = "Mailuser")]
         [bool]$NeedsToChangePassword = $false
     )
-    if ($connection.restApiVersion -ge [version]"4.13.0"){
+    if ($connection.restApiVersion -ge [version]"4.13.0") {
         Write-PSFMessage "API Call after v4.13.0"
         $body = @{
-            firstName             = $FirstName
-            lastName              = $LastName
-            userName                 = $Login
-            gender                = $Gender
-            expiration            = @{
+            firstName        = $FirstName
+            lastName         = $LastName
+            userName         = $Login
+            gender           = $Gender
+            expiration       = @{
                 enableExpiration = "false"
                 expireAt         = "2018-01-01T00:00:00"
             }
-            receiverLanguage      = "de-DE"
-            email                 = $Mail
-            notifyUser            = ("$NotifyUser").ToLower()
+            receiverLanguage = "de-DE"
+            email            = $Mail
+            notifyUser       = ("$NotifyUser").ToLower()
         }
         if ($Domain) {
             $adId = (Get-DracoonAuthConfigAD -Connection $Connection -Alias $Domain).id
@@ -110,22 +110,23 @@
             }
             Write-PSFMessage "Lege einen AD-User an ($Domain/$adId)"
             $body.authData = @{
-                method    = "active_directory"
-                adConfigId= $adId
-                login= $samAccountName
+                method     = "active_directory"
+                adConfigId = $adId
+                login      = $samAccountName
             }
         }
         else {
             Write-PSFMessage "Create basic login user ($Mail)"
             $body.authData = @{
-                method     = "basic"
-                login      = $Mail
+                method   = "basic"
+                # login    = $Login
                 password = New-DracoonRandomPassword
             }
         }
-    }else{
+    }
+    else {
         Write-PSFMessage "API Call before v4.13.0"
-        $body=@{
+        $body = @{
             firstName             = $FirstName
             lastName              = $LastName
             authMethods           = @()
