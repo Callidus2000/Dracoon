@@ -27,7 +27,7 @@
 	# this module
 	RequiredModules    = @(
 		@{ ModuleName = 'PSFramework'; ModuleVersion = '1.6.214' }
-		@{ ModuleName = 'ARAH'; ModuleVersion = '1.3.2' }
+		@{ ModuleName = 'ARAH'; ModuleVersion = '1.3.3' }
 	)
 
 	# Assemblies that must be loaded prior to importing this module
@@ -74,6 +74,7 @@
 		'Test-DracoonConnection'
 		'Connect-DracoonProvisioning'
 		'Get-DracoonProvCustomer'
+		'Get-DracoonSoftwareVersion'
 		'Get-DracoonARAuthOpenidLogin'
 		'Get-DracoonARAuthOpenidResource'
 		'Get-DracoonARAuthPing'
