@@ -3,7 +3,7 @@
 	RootModule         = 'Dracoon.psm1'
 
 	# Version number of this module.
-	ModuleVersion      = '1.6.0'
+	ModuleVersion      = '1.6.1'
 
 	# ID used to uniquely identify this module
 	GUID               = 'c4a0b04e-f2c8-405a-b7f1-6202575649a6'
@@ -49,6 +49,7 @@
 		'Get-DracoonAuditDataroom'
 		'Get-DracoonAuthConfigAD'
 		'Get-DracoonCurrentAccount'
+		'Get-DracoonCurrentCustomer'
 		'Get-DracoonGroup'
 		'Get-DracoonLastAdminRoom'
 		'Get-DracoonAPILog'
