@@ -71,6 +71,7 @@
             method     = "Post"
             Path       = "/v4/nodes/files/uploads"
             Body       = @{"parentId" = $parentNodeId
+                "directS3Upload"      = $true
                 "name"                = $fullFilePath.Name
                 "classification"      = $Classification
                 "size"                = $fullFilePath.length
@@ -86,28 +87,51 @@
             $apiCallParameter.Body.expiration.expireAt = $ExpirationDate.ToString('yyyy-MM-ddT00:00:00')
         }
 
-        Write-PSFMessage "Init: $($apiCallParameter|convertTo-json -depth 10)" -Level Debug
-        Invoke-PSFProtectedCommand -Action "Initialize Upload, Open Upload Channel" -Target $fullFilePath.Name -ScriptBlock {
+        Write-PSFMessage "Get upload token: $($apiCallParameter|convertTo-json -depth 10)" -Level Debug
+        Invoke-PSFProtectedCommand -Action "Initialize Upload, Get S3 direct upload URL" -Target $fullFilePath.Name -ScriptBlock {
             $initUpload = Invoke-DracoonAPI @apiCallParameter
             Write-PSFMessage "initUpload=$($initUpload|ConvertTo-Json -Depth 5)" -Level Debug
-            Invoke-PSFProtectedCommand -Action "Upload File-Data" -Target $initUpload.token -ScriptBlock {
+
+            $apiCallParameter = @{
+                Connection  = $Connection
+                method      = "Post"
+                Path        = "/v4/nodes/files/uploads/$($initUpload.uploadId)/s3_urls"
+                Body       = @{
+                    "firstPartNumber"     = 1
+                    "lastPartNumber"      = 1
+                    "size"                = $fullFilePath.length
+                }
+            }
+            $result = Invoke-DracoonAPI @apiCallParameter
+        }
+
+        Invoke-PSFProtectedCommand -Action "Initialize Upload, Open Upload Channel" -Target $fullFilePath.Name -ScriptBlock {
+            $initUploadS3 = Invoke-DracoonAPI @apiCallParameter
+            $s3UploadUrl = $initUploadS3.urls.url
+            Invoke-PSFProtectedCommand -Action "Upload File-Data" -Target $fullFilePath.Name -ScriptBlock {
                 $apiCallParameter = @{
                     Connection  = $Connection
                     method      = "Post"
-                    Path        = "/v4/uploads/$($initUpload.token)"
+                    Path        = $s3UploadUrl
                     ContentType = "application/octet-stream"
                     InFile      = $fullFilePath.FullName
                 }
-                $result = Invoke-DracoonAPI @apiCallParameter
-                # $result = Invoke-RestMethod $initUpload.uploadUrl -ContentType "application/octet-stream" -Method Post -Headers $connection.headers -InFile $fullFilePath.FullName
+                $result = Invoke-RestMethod -Uri "$s3UploadUrl" -ContentType "application/octet-stream" -Method Put -InFile $fullFilePath.FullName -ResponseHeadersVariable respHeaders
+                $eTag = $respHeaders.Etag.Trim('"')
 
                 Write-PSFMessage $result
-                Invoke-PSFProtectedCommand -Action "Close Upload Channel" -Target $initUpload.token -ScriptBlock {
+                Invoke-PSFProtectedCommand -Action "Close Upload Channel" -Target $initUpload.uploadId -ScriptBlock {
                     $apiCallParameter = @{
                         Connection = $Connection
                         method     = "Put"
-                        Path       = "/v4/uploads/$($initUpload.token)"
+                        Path       = "/v4/nodes/files/uploads/$($initUpload.uploadId)/s3"
                         Body=@{
+                            'parts'           = @(
+                                @{
+                                    partEtag       = $eTag
+                                    partNumber     = 1
+                                }
+                            )
                             resolutionStrategy = $ResolutionStrategy
                         }
                     }
