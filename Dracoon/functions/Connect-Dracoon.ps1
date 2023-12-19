@@ -123,7 +123,7 @@ DYNAMIC PARAMETERS
 	DynamicParam {
 		# Neccessary for OAuth Login: The Secret of the OAauth Client.
 		Write-PSFMessage -Level Debug "Client-Secret-Check, `$PSCmdlet.ParameterSetName=$($PSCmdlet.ParameterSetName)"
-		If ($ClientID -ne "dracoon_legacy_scriptingToken") {
+		If ($ClientID -ne "dracoon_legacy_scripting") {
 			$associatedParameterSets = @(
 				"authorization_code"
 				"refresh_token"
