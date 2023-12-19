@@ -47,6 +47,9 @@
      -For s3: Query the s3 Upload URL
     -Upload - Binary transfer of the file
     -Closing the upload - Tell Dracoon that the data has completely transfered
+
+    S3 Upload code created by fpc-1111, I've lost the battle in modifying his PR
+    (https://github.com/Callidus2000/Dracoon/pull/7) to my requirements.
     #>
     [CmdletBinding(DefaultParameterSetName = "Upload", SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 
